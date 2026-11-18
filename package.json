@@ -18,7 +18,8 @@
     "verify:render": "docker build -q -t arcatic-ffmpeg:test -f infrastructure/ffmpeg.Dockerfile infrastructure >/dev/null && tsx scripts/verify-render.ts",
     "lago:setup": "tsx scripts/lago-setup.ts",
     "staging:preflight": "tsx scripts/staging/preflight.ts",
-    "staging:smtp": "tsx scripts/staging/smtp-check.ts"
+    "staging:smtp": "tsx scripts/staging/smtp-check.ts",
+    "staging:init": "tsx scripts/staging/init-env.ts"
   },
   "devDependencies": {
     "turbo": "^2.3.3",

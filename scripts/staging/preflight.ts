@@ -47,7 +47,7 @@ const publicMail = allow.filter((d) => /^(gmail|googlemail|outlook|hotmail|live|
 add("safety", "EMAIL_ALLOWLIST holds test domains only", allow.length === 0 ? "FAIL" : publicMail.length ? "FAIL" : "PASS", publicMail.length ? `contains public mailbox domain(s): ${publicMail.join(", ")}` : `${allow.length} domain(s)`);
 const cors = (env.API_CORS_ORIGINS ?? "").split(",").map((s) => s.trim()).filter(Boolean);
 add("safety", "API_CORS_ORIGINS exact, no wildcard", cors.length && !cors.some((o) => o === "*" || o.includes("*")) ? "PASS" : "FAIL", `${cors.length} origin(s)`);
-if (env.APP_URL && cors.length) add("safety", "APP_URL is an allowed CORS origin", cors.includes(new URL(env.APP_URL).origin) ? "PASS" : "FAIL");
+if (env.APP_URL && cors.length) add("safety", "APP_URL is an allowed CORS origin", urlOf("APP_URL") && cors.includes(urlOf("APP_URL")!.origin) ? "PASS" : "FAIL");
 const len = (k: string, n: number) => add("config", `${k} strength`, (env[k]?.length ?? 0) >= n ? "PASS" : "FAIL", `needs ≥ ${n} characters`);
 len("ENCRYPTION_KEY", 32); len("ADMIN_API_TOKEN", 32);
 if (has("PUSH_RECEIPT_SECRET")) len("PUSH_RECEIPT_SECRET", 32); else add("config", "PUSH_RECEIPT_SECRET", "WARN", "unset → receipts are signed with VAPID_PRIVATE_KEY");
