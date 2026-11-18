@@ -1,0 +1,81 @@
+# Hosted-staging stack for a server that ALREADY runs other apps behind Coolify's Traefik
+# (an existing shared server: its Traefik owns ports 80/443 and issues Let's Encrypt certificates, so no Caddy here).
+# Verified facts about that server (read-only audit, 2026-11-18): Traefik v3 with entrypoints `http`/`https`,
+# certresolver `letsencrypt` (HTTP-01), docker provider with exposedByDefault=false, docker network `coolify`.
+# Other apps already run there — this file uses distinct image and project names and publishes NO host
+# ports, so it cannot collide with them.
+#
+# Not deployed until the owner approves. Env: WEB_HOST, API_HOST (+ .env.staging).
+#   docker compose -f infrastructure/docker-compose.staging-shared.yml --env-file .env.staging build   # off-peak
+#   docker compose -f infrastructure/docker-compose.staging-shared.yml --env-file .env.staging up -d
+name: arcatic-os-staging
+
+x-common: &common
+  restart: unless-stopped
+  logging: { driver: json-file, options: { max-size: "10m", max-file: "5" } }
+  security_opt: ["no-new-privileges:true"]
+
+services:
+  # The web container holds NO secrets: NEXT_PUBLIC_* values are baked in at build time.
+  web:
+    <<: *common
+    image: arcatic-os-web:staging
+    build:
+      context: ..
+      dockerfile: infrastructure/web.Dockerfile
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:?}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:?}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?}
+        NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_CLIENT_ID:-}
+        NEXT_PUBLIC_GOOGLE_API_KEY: ${NEXT_PUBLIC_GOOGLE_API_KEY:-}
+        NEXT_PUBLIC_GOOGLE_APP_ID: ${NEXT_PUBLIC_GOOGLE_APP_ID:-}
+    networks: [coolify]
+    mem_limit: 512m
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=coolify
+      - traefik.http.routers.arcatic-os-stg-web-http.rule=Host(`${WEB_HOST:?set WEB_HOST}`)
+      - traefik.http.routers.arcatic-os-stg-web-http.entrypoints=http
+      - traefik.http.routers.arcatic-os-stg-web-http.middlewares=arcatic-os-stg-redirect
+      - traefik.http.middlewares.arcatic-os-stg-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.arcatic-os-stg-web.rule=Host(`${WEB_HOST}`)
+      - traefik.http.routers.arcatic-os-stg-web.entrypoints=https
+      - traefik.http.routers.arcatic-os-stg-web.tls=true
+      - traefik.http.routers.arcatic-os-stg-web.tls.certresolver=letsencrypt
+      - traefik.http.services.arcatic-os-stg-web.loadbalancer.server.port=3000
+
+  api:
+    <<: *common
+    image: arcatic-os-api:staging
+    build: { context: .., dockerfile: infrastructure/api.Dockerfile }
+    env_file: [../.env.staging]
+    networks: [coolify, internal]
+    mem_limit: 512m
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=coolify
+      - traefik.http.routers.arcatic-os-stg-api-http.rule=Host(`${API_HOST:?set API_HOST}`)
+      - traefik.http.routers.arcatic-os-stg-api-http.entrypoints=http
+      - traefik.http.routers.arcatic-os-stg-api-http.middlewares=arcatic-os-stg-redirect
+      - traefik.http.routers.arcatic-os-stg-api.rule=Host(`${API_HOST}`)
+      - traefik.http.routers.arcatic-os-stg-api.entrypoints=https
+      - traefik.http.routers.arcatic-os-stg-api.tls=true
+      - traefik.http.routers.arcatic-os-stg-api.tls.certresolver=letsencrypt
+      - traefik.http.services.arcatic-os-stg-api.loadbalancer.server.port=4000
+
+  # Capped at 1.5 GB / 1.5 CPU because the server is shared and under memory pressure; renders (ffmpeg) are NOT
+  # part of the first hosted verification. Raise only after checking the other apps are unaffected.
+  worker:
+    <<: *common
+    image: arcatic-os-worker:staging
+    build: { context: .., dockerfile: infrastructure/worker.Dockerfile }
+    env_file: [../.env.staging]
+    networks: [internal]            # outbound only; nothing routes to it
+    mem_limit: 1536m
+    memswap_limit: 1536m            # no swap for this container
+    cpus: 1.5
+
+networks:
+  coolify: { external: true }       # the existing Traefik network
+  internal: {}
