@@ -1,0 +1,606 @@
+{
+  "people": [
+    {
+      "label": "Owner",
+      "id": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+      "email": "owner+20261118105925@example.test"
+    },
+    {
+      "label": "Contributor",
+      "id": "cc88b4d1-a520-4a53-848b-81354af5a96a",
+      "email": "contrib+20261118105925@example.test"
+    },
+    {
+      "label": "Manager",
+      "id": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+      "email": "manager+20261118105925@example.test"
+    },
+    {
+      "label": "Specialist",
+      "id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+      "email": "spec+20261118105925@example.test"
+    },
+    {
+      "label": "Other specialist",
+      "id": "5e2be29e-cfdd-490b-8540-febe365d8f8b",
+      "email": "spec2+20261118105925@example.test"
+    },
+    {
+      "label": "Outsider",
+      "id": "ea2f29ff-2eab-421b-9f6c-afd39d9d716e",
+      "email": "outsider+20261118105925@example.test"
+    },
+    {
+      "label": "Not allowlisted",
+      "id": "d447da92-9882-4774-9433-ee4c7b88c648",
+      "email": "blocked+20261118105925@not-allowlisted.test"
+    }
+  ],
+  "wallet_start": {
+    "balance": 1100,
+    "held": 0
+  },
+  "flowA_submit": {
+    "response": {
+      "id": "f78a7e3b-38d9-4587-89ce-47f640608a6d",
+      "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+      "brand_id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+      "offering_key": "polish_draft",
+      "title": "Polish: office lunch article",
+      "status": "submitted",
+      "intake": {
+        "focus": "Tighten the intro, keep it friendly"
+      },
+      "brief": {
+        "brand": {
+          "name": "Annapurna Tiffins",
+          "fonts": [],
+          "voice": {
+            "do": [],
+            "dont": [],
+            "tone": []
+          },
+          "colors": [],
+          "offers": [],
+          "language": "en",
+          "audiences": [],
+          "bannedWords": [
+            "cheap"
+          ],
+          "disclaimers": [],
+          "claimsPolicy": "strict",
+          "preferredWords": []
+        },
+        "dueAt": "2026-11-20T10:59:28.225Z",
+        "title": "Polish: office lunch article",
+        "source": {
+          "text": "Why office lunch matters\n\nLunch is important. Lunch is very important for teams.",
+          "type": "blog",
+          "title": "Why office lunch matters"
+        },
+        "offering": {
+          "key": "polish_draft",
+          "name": "Human polish",
+          "deliverable": "Finished text in the editor"
+        },
+        "references": [
+          {
+            "kind": "image",
+            "name": "reference.png"
+          }
+        ],
+        "requirements": [
+          {
+            "label": "What should the editor focus on?",
+            "value": "Tighten the intro, keep it friendly"
+          }
+        ],
+        "acceptanceCriteria": [
+          "Sounds like Annapurna Tiffins: follow the voice notes.",
+          "None of these words: cheap.",
+          "Every factual claim (numbers, rankings, results) is backed by the brand kit, the source draft or a cited link.",
+          "Written in en; proofread; no placeholder text.",
+          "Keeps the draft's meaning and facts; explains any fact that was removed or changed."
+        ]
+      },
+      "source_content_item_id": "e6e5ea7e-3b51-4a14-a142-8d14e889b86e",
+      "source_version_id": "801cbd62-4149-42af-9cad-eb100e893ec0",
+      "reference_asset_ids": [
+        "0315ce42-8a5b-47e2-a33b-d205a98feda8"
+      ],
+      "credits": 25,
+      "reservation_id": "098424cf-6722-4d52-9474-3e7d31850d73",
+      "extra_reservation_ids": [],
+      "revisions_included": 1,
+      "revisions_used": 0,
+      "assignee_id": null,
+      "qa_by": null,
+      "due_at": "2026-11-20T10:59:28.225+00:00",
+      "submitted_at": "2026-11-18T10:59:28.225+00:00",
+      "assigned_at": null,
+      "delivered_at": null,
+      "approved_at": null,
+      "cancelled_at": null,
+      "result_content_item_id": null,
+      "result_version_id": null,
+      "result_asset_ids": [],
+      "rating": null,
+      "feedback": null,
+      "lock_version": 1,
+      "created_by": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+      "created_at": "2026-11-18T10:59:28.144679+00:00",
+      "updated_at": "2026-11-18T10:59:28.243737+00:00",
+      "stage": "Waiting for a specialist",
+      "reservation": {
+        "amount": 25
+      }
+    },
+    "hold": {
+      "id": "098424cf-6722-4d52-9474-3e7d31850d73",
+      "amount": 25,
+      "status": "held",
+      "settled_amount": null,
+      "expires_at": "2027-01-17T10:59:28.233436+00:00"
+    },
+    "wallet": {
+      "balance": 1100,
+      "held": 25
+    }
+  },
+  "flowA_final": {
+    "request": {
+      "id": "f78a7e3b-38d9-4587-89ce-47f640608a6d",
+      "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+      "brand_id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+      "offering_key": "polish_draft",
+      "title": "Polish: office lunch article",
+      "status": "approved",
+      "intake": {
+        "focus": "Tighten the intro, keep it friendly"
+      },
+      "brief": {
+        "brand": {
+          "name": "Annapurna Tiffins",
+          "fonts": [],
+          "voice": {
+            "do": [],
+            "dont": [],
+            "tone": []
+          },
+          "colors": [],
+          "offers": [],
+          "language": "en",
+          "audiences": [],
+          "bannedWords": [
+            "cheap"
+          ],
+          "disclaimers": [],
+          "claimsPolicy": "strict",
+          "preferredWords": []
+        },
+        "dueAt": "2026-11-20T10:59:28.225Z",
+        "title": "Polish: office lunch article",
+        "source": {
+          "text": "Why office lunch matters\n\nLunch is important. Lunch is very important for teams.",
+          "type": "blog",
+          "title": "Why office lunch matters"
+        },
+        "offering": {
+          "key": "polish_draft",
+          "name": "Human polish",
+          "deliverable": "Finished text in the editor"
+        },
+        "references": [
+          {
+            "kind": "image",
+            "name": "reference.png"
+          }
+        ],
+        "requirements": [
+          {
+            "label": "What should the editor focus on?",
+            "value": "Tighten the intro, keep it friendly"
+          }
+        ],
+        "acceptanceCriteria": [
+          "Sounds like Annapurna Tiffins: follow the voice notes.",
+          "None of these words: cheap.",
+          "Every factual claim (numbers, rankings, results) is backed by the brand kit, the source draft or a cited link.",
+          "Written in en; proofread; no placeholder text.",
+          "Keeps the draft's meaning and facts; explains any fact that was removed or changed."
+        ]
+      },
+      "source_content_item_id": "e6e5ea7e-3b51-4a14-a142-8d14e889b86e",
+      "source_version_id": "801cbd62-4149-42af-9cad-eb100e893ec0",
+      "reference_asset_ids": [
+        "0315ce42-8a5b-47e2-a33b-d205a98feda8"
+      ],
+      "credits": 25,
+      "reservation_id": "098424cf-6722-4d52-9474-3e7d31850d73",
+      "extra_reservation_ids": [
+        "3d04fd11-dc26-4265-8903-40775d9e0a7c"
+      ],
+      "revisions_included": 1,
+      "revisions_used": 2,
+      "assignee_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+      "qa_by": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+      "due_at": "2026-11-19T10:59:29.587+00:00",
+      "submitted_at": "2026-11-18T10:59:28.225+00:00",
+      "assigned_at": "2026-11-18T10:59:28.614+00:00",
+      "delivered_at": "2026-11-18T10:59:29.796+00:00",
+      "approved_at": "2026-11-18T10:59:29.962+00:00",
+      "cancelled_at": null,
+      "result_content_item_id": "e6e5ea7e-3b51-4a14-a142-8d14e889b86e",
+      "result_version_id": "73a60ce7-806b-4d3b-af5d-b983f6f1e121",
+      "result_asset_ids": [
+        "b4923209-f85f-46bc-b6e9-3e1f2dff8ee3"
+      ],
+      "rating": 5,
+      "feedback": "Great work",
+      "lock_version": 16,
+      "created_by": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+      "created_at": "2026-11-18T10:59:28.144679+00:00",
+      "updated_at": "2026-11-18T10:59:29.961906+00:00"
+    },
+    "holds": [
+      {
+        "id": "098424cf-6722-4d52-9474-3e7d31850d73",
+        "amount": 25,
+        "status": "settled",
+        "settled_amount": 25,
+        "expires_at": "2027-01-17T10:59:28.233436+00:00"
+      },
+      {
+        "id": "3d04fd11-dc26-4265-8903-40775d9e0a7c",
+        "amount": 5,
+        "status": "settled",
+        "settled_amount": 5,
+        "expires_at": "2027-01-17T10:59:29.582806+00:00"
+      }
+    ],
+    "wallet": {
+      "balance": 1070,
+      "held": 0
+    },
+    "version": {
+      "version": 2,
+      "transform": "service"
+    },
+    "asset": {
+      "id": "b4923209-f85f-46bc-b6e9-3e1f2dff8ee3",
+      "storage_path": "e060796f-4350-4be2-9229-68f17f32639b/2c2cbb50-a422-4a62-8bd8-034bb06b7671/b4923209-f85f-46bc-b6e9-3e1f2dff8ee3/cover.png",
+      "status": "ready",
+      "mime_type": "image/png",
+      "title": "cover.png"
+    }
+  },
+  "ops": {
+    "open": 1,
+    "unassigned": 0,
+    "overdue": 0,
+    "dueSoon": 0,
+    "awaitingCustomer": 0,
+    "creditsHeld": 120,
+    "holdsExpiringWithin7Days": 0,
+    "holdsLost": 0
+  },
+  "audit_flowA": [
+    {
+      "action": "service.status:submitted",
+      "actor_id": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:28.253013+00:00"
+    },
+    {
+      "action": "service.hold",
+      "actor_id": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:28.261564+00:00"
+    },
+    {
+      "action": "service.status:assigned",
+      "actor_id": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:28.616876+00:00"
+    },
+    {
+      "action": "service.assigned",
+      "actor_id": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:28.620193+00:00"
+    },
+    {
+      "action": "service.status:in_progress",
+      "actor_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:28.812805+00:00"
+    },
+    {
+      "action": "service.file_added",
+      "actor_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:28.908559+00:00"
+    },
+    {
+      "action": "service.status:in_review",
+      "actor_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:28.937253+00:00"
+    },
+    {
+      "action": "service.status:in_progress",
+      "actor_id": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.132446+00:00"
+    },
+    {
+      "action": "service.status:in_review",
+      "actor_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.178721+00:00"
+    },
+    {
+      "action": "service.status:delivered",
+      "actor_id": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.209421+00:00"
+    },
+    {
+      "action": "service.status:revision_requested",
+      "actor_id": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.342392+00:00"
+    },
+    {
+      "action": "service.status:in_progress",
+      "actor_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.406052+00:00"
+    },
+    {
+      "action": "service.status:in_review",
+      "actor_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.462621+00:00"
+    },
+    {
+      "action": "service.status:delivered",
+      "actor_id": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.497259+00:00"
+    },
+    {
+      "action": "service.status:revision_requested",
+      "actor_id": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.593435+00:00"
+    },
+    {
+      "action": "service.hold",
+      "actor_id": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.602979+00:00"
+    },
+    {
+      "action": "service.status:in_progress",
+      "actor_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.703454+00:00"
+    },
+    {
+      "action": "service.status:in_review",
+      "actor_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.758099+00:00"
+    },
+    {
+      "action": "service.status:delivered",
+      "actor_id": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.805554+00:00"
+    },
+    {
+      "action": "service.status:approved",
+      "actor_id": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.965249+00:00"
+    },
+    {
+      "action": "service.charge",
+      "actor_id": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+      "actor_type": "user",
+      "created_at": "2026-11-18T10:59:29.976537+00:00"
+    }
+  ],
+  "push": [
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "We've got your request: Polish: office lunch article"
+    },
+    {
+      "device": "gone",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "We've got your request: Polish: office lunch article"
+    },
+    {
+      "device": "spec",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Assigned to you: Polish: office lunch article"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "A specialist is working on: Polish: office lunch article"
+    },
+    {
+      "device": "spec",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "QA returned: Polish: office lunch article"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Ready for your review: Polish: office lunch article"
+    },
+    {
+      "device": "spec",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Revision requested: Polish: office lunch article"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Ready for your review: Polish: office lunch article"
+    },
+    {
+      "device": "spec",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Revision requested: Polish: office lunch article"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Ready for your review: Polish: office lunch article"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Approved: Polish: office lunch article"
+    },
+    {
+      "device": "spec",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Approved by the customer: Polish: office lunch article"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "We've got your request: Article: tiffin plans explained"
+    },
+    {
+      "device": "spec",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Assigned to you: Article: tiffin plans explained"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "A specialist is working on: Article: tiffin plans explained"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Cancelled: Article: tiffin plans explained"
+    },
+    {
+      "device": "spec",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Cancelled by the customer: Article: tiffin plans explained"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "We've got your request: Article started"
+    },
+    {
+      "device": "spec",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Assigned to you: Article started"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "A specialist is working on: Article started"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "We've got your request: Review: Diwali ad"
+    },
+    {
+      "device": "spec",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Assigned to you: Review: Diwali ad"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "A specialist is working on: Review: Diwali ad"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Ready for your review: Review: Diwali ad"
+    },
+    {
+      "device": "owner",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Approved: Review: Diwali ad"
+    },
+    {
+      "device": "spec",
+      "encoding": "aes128gcm",
+      "ttl": "86400",
+      "title": "Approved by the customer: Review: Diwali ad"
+    }
+  ],
+  "email": {
+    "customer": [
+      "Approved: Review: Diwali ad",
+      "Ready for your review: Review: Diwali ad",
+      "We've got your request: Review: Diwali ad",
+      "We've got your request: Article started",
+      "Cancelled: Article: tiffin plans explained",
+      "We've got your request: Article: tiffin plans explained",
+      "Approved: Polish: office lunch article",
+      "Ready for your review: Polish: office lunch article",
+      "Ready for your review: Polish: office lunch article",
+      "Ready for your review: Polish: office lunch article",
+      "We've got your request: Polish: office lunch article"
+    ],
+    "manager": [
+      "New request: Review: Diwali ad",
+      "New request: Article started",
+      "New request: Article: tiffin plans explained",
+      "New request: Polish: office lunch article"
+    ],
+    "specialist": [
+      "Approved by the customer: Review: Diwali ad",
+      "Assigned to you: Review: Diwali ad",
+      "Assigned to you: Article started",
+      "Cancelled by the customer: Article: tiffin plans explained",
+      "Assigned to you: Article: tiffin plans explained",
+      "Approved by the customer: Polish: office lunch article",
+      "Revision requested: Polish: office lunch article",
+      "Revision requested: Polish: office lunch article",
+      "Assigned to you: Polish: office lunch article"
+    ],
+    "blocked": []
+  }
+}

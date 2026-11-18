@@ -1,0 +1,22 @@
+{
+  "check": "Real Web Push to Chrome desktop via Google FCM",
+  "browser": "Chrome 157, macOS (the user's own Chrome)",
+  "subscription": {
+    "push_service": "fcm.googleapis.com",
+    "permission": "granted",
+    "service_worker": "activated"
+  },
+  "sent_with": "scripts/e2e/send-test-push.ts \u2192 packages/jobs notifier \u2192 web-push (VAPID) ",
+  "push_service_response": [
+    {
+      "status": 201,
+      "ok": true
+    }
+  ],
+  "email_copy": {
+    "sent": true
+  },
+  "displayed": "confirmed by the user: system notification 'Ready for your review: Push test from Arcatic' appeared on macOS",
+  "not_checked": "clicking the notification to open /m",
+  "at": "2026-11-18"
+}

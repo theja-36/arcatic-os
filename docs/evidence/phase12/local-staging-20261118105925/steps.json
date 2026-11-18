@@ -1,0 +1,1646 @@
+{
+  "target": "local-staging",
+  "run": "20261118105925",
+  "api": "http://localhost:4418",
+  "supabase": "http://127.0.0.1:54321",
+  "passed": 98,
+  "failed": 0,
+  "steps": [
+    {
+      "n": 1,
+      "name": "owner creates a workspace",
+      "ok": true,
+      "detail": {
+        "workspaceId": "e060796f-4350-4be2-9229-68f17f32639b"
+      }
+    },
+    {
+      "n": 2,
+      "name": "owner creates a brand",
+      "ok": true,
+      "detail": {
+        "id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+        "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+        "name": "Annapurna Tiffins",
+        "website_url": "https://annapurna.example.test",
+        "industry": null,
+        "languages": [
+          "en"
+        ],
+        "logo_asset_id": null,
+        "profile": {},
+        "status": "active",
+        "created_by": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+        "deleted_at": null,
+        "created_at": "2026-11-18T10:59:27.698385+00:00",
+        "updated_at": "2026-11-18T10:59:27.698385+00:00",
+        "active_kit_version_id": null,
+        "kit_completeness": 0
+      }
+    },
+    {
+      "n": 3,
+      "name": "owner approves a Brand Kit",
+      "ok": true,
+      "detail": {
+        "version": 1,
+        "status": "approved",
+        "context": {
+          "hash": "dae709d7093e755e7ff9a41e784efe319a00704d71227c539c33a5cf8bea1906",
+          "tokenEstimate": 138,
+          "factIds": [
+            "vocabulary.banned"
+          ]
+        },
+        "unreviewedSuggestions": 0,
+        "impact": {
+          "changedFactIds": [],
+          "affectedContent": []
+        }
+      }
+    },
+    {
+      "n": 4,
+      "name": "seed member: Contributor as contributor",
+      "ok": true,
+      "detail": [
+        {
+          "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+          "user_id": "cc88b4d1-a520-4a53-848b-81354af5a96a",
+          "role": "contributor",
+          "status": "active",
+          "brand_restricted": false,
+          "invited_by": null,
+          "created_at": "2026-11-18T10:59:27.799062+00:00",
+          "updated_at": "2026-11-18T10:59:27.799062+00:00"
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "name": "seed member: Not allowlisted as admin",
+      "ok": true,
+      "detail": [
+        {
+          "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+          "user_id": "d447da92-9882-4774-9433-ee4c7b88c648",
+          "role": "admin",
+          "status": "active",
+          "brand_restricted": false,
+          "invited_by": null,
+          "created_at": "2026-11-18T10:59:27.802839+00:00",
+          "updated_at": "2026-11-18T10:59:27.802839+00:00"
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "name": "admin grants 1000 test credits",
+      "ok": true,
+      "detail": {
+        "id": 3,
+        "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+        "delta": 1000,
+        "kind": "adjustment",
+        "reservation_id": null,
+        "reference": "admin:e2e-20261118105925",
+        "balance_after": 1100,
+        "created_by": null,
+        "created_at": "2026-11-18T10:59:27.809724+00:00",
+        "reason": "E2E test credits"
+      }
+    },
+    {
+      "n": 7,
+      "name": "seed a draft content item (v1) to be finished",
+      "ok": true,
+      "detail": {
+        "item": {
+          "id": "e6e5ea7e-3b51-4a14-a142-8d14e889b86e",
+          "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+          "brand_id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+          "campaign_id": null,
+          "topic_id": null,
+          "type": "blog",
+          "channel": "blog",
+          "language": "en",
+          "title": "Why office lunch matters",
+          "status": "draft",
+          "current_version_id": null,
+          "ai_disclosure_required": false,
+          "due_at": null,
+          "assignee_id": null,
+          "created_by": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+          "created_at": "2026-11-18T10:59:27.816295+00:00",
+          "updated_at": "2026-11-18T10:59:27.816295+00:00",
+          "template": null,
+          "source_item_id": null,
+          "approved_version_id": null,
+          "metadata": {},
+          "revision": 0,
+          "project_id": null,
+          "repurpose_run_id": null,
+          "source_ref": null,
+          "seo": {}
+        },
+        "ver": {
+          "id": "801cbd62-4149-42af-9cad-eb100e893ec0",
+          "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+          "brand_id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+          "content_item_id": "e6e5ea7e-3b51-4a14-a142-8d14e889b86e",
+          "version": 1,
+          "origin": "human",
+          "body": {
+            "doc": {
+              "blocks": [
+                {
+                  "id": "b1",
+                  "kind": "title",
+                  "text": "Why office lunch matters",
+                  "origin": "ai"
+                },
+                {
+                  "id": "b2",
+                  "kind": "paragraph",
+                  "text": "Lunch is important. Lunch is very important for teams.",
+                  "origin": "ai"
+                }
+              ],
+              "format": 1
+            },
+            "format": 1
+          },
+          "plain_text": null,
+          "media_asset_ids": [],
+          "prompt": null,
+          "prompt_template": null,
+          "model": null,
+          "model_params": null,
+          "inputs": null,
+          "brand_context_version": null,
+          "brand_context_hash": null,
+          "depends_on_facts": [],
+          "source_chunk_ids": [],
+          "generation_job_id": null,
+          "trace_id": null,
+          "credits_cost": null,
+          "validation_report": null,
+          "feedback": null,
+          "created_by": null,
+          "created_at": "2026-11-18T10:59:27.821165+00:00",
+          "base_version": null,
+          "transform": null,
+          "regenerated_block_ids": [],
+          "insight_ids": []
+        }
+      }
+    },
+    {
+      "n": 8,
+      "name": "reference image uploaded to Storage and finalised",
+      "ok": true,
+      "detail": {
+        "put": 200,
+        "fin": {
+          "id": "0315ce42-8a5b-47e2-a33b-d205a98feda8",
+          "brand_id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+          "collection_id": null,
+          "kind": "image",
+          "status": "ready",
+          "mime_type": "image/png",
+          "bytes": 1020,
+          "width": 192,
+          "height": 192,
+          "duration_ms": null,
+          "title": "reference.png",
+          "alt_text": null,
+          "tags": [],
+          "source": "upload",
+          "source_url": null,
+          "metadata": {},
+          "created_at": "2026-11-18T10:59:27.836687+00:00"
+        }
+      }
+    },
+    {
+      "n": 9,
+      "name": "admin adds Mira (manager)",
+      "ok": true,
+      "detail": {
+        "user_id": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+        "role": "manager",
+        "display_name": "Mira (manager)",
+        "skills": [
+          "writing",
+          "ads"
+        ],
+        "active": true,
+        "max_active": 5,
+        "created_at": "2026-11-18T10:59:28.033086+00:00"
+      }
+    },
+    {
+      "n": 10,
+      "name": "admin adds Sam (specialist)",
+      "ok": true,
+      "detail": {
+        "user_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+        "role": "specialist",
+        "display_name": "Sam (specialist)",
+        "skills": [
+          "writing",
+          "ads"
+        ],
+        "active": true,
+        "max_active": 5,
+        "created_at": "2026-11-18T10:59:28.04414+00:00"
+      }
+    },
+    {
+      "n": 11,
+      "name": "admin adds Sol (specialist)",
+      "ok": true,
+      "detail": {
+        "user_id": "5e2be29e-cfdd-490b-8540-febe365d8f8b",
+        "role": "specialist",
+        "display_name": "Sol (specialist)",
+        "skills": [
+          "writing",
+          "ads"
+        ],
+        "active": true,
+        "max_active": 5,
+        "created_at": "2026-11-18T10:59:28.053492+00:00"
+      }
+    },
+    {
+      "n": 12,
+      "name": "register push device (owner)",
+      "ok": true,
+      "detail": {
+        "id": "169fa3bc-0e73-4942-b722-246a0b3e9213",
+        "kind": "webpush",
+        "label": "e2e owner",
+        "created_at": "2026-11-18T10:59:28.085415+00:00",
+        "last_seen_at": "2026-11-18T10:59:28.082+00:00"
+      }
+    },
+    {
+      "n": 13,
+      "name": "register push device (spec)",
+      "ok": true,
+      "detail": {
+        "id": "a595956e-76a8-41ad-b8ab-ca78696646a5",
+        "kind": "webpush",
+        "label": "e2e spec",
+        "created_at": "2026-11-18T10:59:28.105736+00:00",
+        "last_seen_at": "2026-11-18T10:59:28.102+00:00"
+      }
+    },
+    {
+      "n": 14,
+      "name": "register push device (gone)",
+      "ok": true,
+      "detail": {
+        "id": "5556d581-ac7a-4d5b-92e6-28ae077f74e2",
+        "kind": "webpush",
+        "label": "e2e gone",
+        "created_at": "2026-11-18T10:59:28.118808+00:00",
+        "last_seen_at": "2026-11-18T10:59:28.118+00:00"
+      }
+    },
+    {
+      "n": 15,
+      "name": "VAPID public key served to browsers",
+      "ok": true,
+      "detail": {
+        "publicKey": "BB9ZzuWLprJZwlUavA3VqFWnIoUiNZctEAOWIRoVAOxWBwN0ToGzy2iv6vNCbv7gvw0zd2p6IZXWai-W1e4eLg0"
+      }
+    },
+    {
+      "n": 16,
+      "name": "A1 customer creates a request (draft)",
+      "ok": true,
+      "detail": {
+        "id": "f78a7e3b-38d9-4587-89ce-47f640608a6d",
+        "brand_id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+        "offering_key": "polish_draft",
+        "title": "Polish: office lunch article",
+        "status": "draft",
+        "intake": {
+          "focus": "Tighten the intro, keep it friendly"
+        },
+        "brief": null,
+        "source_content_item_id": "e6e5ea7e-3b51-4a14-a142-8d14e889b86e",
+        "source_version_id": null,
+        "reference_asset_ids": [
+          "0315ce42-8a5b-47e2-a33b-d205a98feda8"
+        ],
+        "credits": null,
+        "revisions_included": 1,
+        "revisions_used": 0,
+        "due_at": null,
+        "submitted_at": null,
+        "assigned_at": null,
+        "delivered_at": null,
+        "approved_at": null,
+        "cancelled_at": null,
+        "result_content_item_id": null,
+        "result_version_id": null,
+        "result_asset_ids": [],
+        "rating": null,
+        "feedback": null,
+        "lock_version": 0,
+        "created_by": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+        "created_at": "2026-11-18T10:59:28.144679+00:00",
+        "updated_at": "2026-11-18T10:59:28.144679+00:00",
+        "stage": "Draft"
+      }
+    },
+    {
+      "n": 17,
+      "name": "A2 submit: brief frozen with brand essentials + source draft",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "brief": {
+          "brand": "Annapurna Tiffins",
+          "banned": [
+            "cheap"
+          ],
+          "criteria": [
+            "Sounds like Annapurna Tiffins: follow the voice notes.",
+            "None of these words: cheap.",
+            "Every factual claim (numbers, rankings, results) is backed by the brand kit, the source draft or a cited link.",
+            "Written in en; proofread; no placeholder text.",
+            "Keeps the draft's meaning and facts; explains any fact that was removed or changed."
+          ]
+        }
+      }
+    },
+    {
+      "n": 18,
+      "name": "A3 submit: 25 credits held for ~60 days",
+      "ok": true,
+      "detail": {
+        "id": "098424cf-6722-4d52-9474-3e7d31850d73",
+        "amount": 25,
+        "status": "held",
+        "settled_amount": null,
+        "expires_at": "2027-01-17T10:59:28.233436+00:00"
+      }
+    },
+    {
+      "n": 19,
+      "name": "A4 wallet: held +25, balance unchanged",
+      "ok": true,
+      "detail": {
+        "before": {
+          "balance": 1100,
+          "held": 0
+        },
+        "after": {
+          "balance": 1100,
+          "held": 25
+        }
+      }
+    },
+    {
+      "n": 20,
+      "name": "A5 contributor cannot approve",
+      "ok": true
+    },
+    {
+      "n": 21,
+      "name": "A6 outsider cannot see the request (404)",
+      "ok": true
+    },
+    {
+      "n": 22,
+      "name": "A7 outsider's own workspace path doesn't reach it either",
+      "ok": true
+    },
+    {
+      "n": 23,
+      "name": "A8 customer has no service desk (404)",
+      "ok": true
+    },
+    {
+      "n": 24,
+      "name": "A9 manager sees it in the triage queue",
+      "ok": true,
+      "detail": {
+        "data": [
+          {
+            "id": "f78a7e3b-38d9-4587-89ce-47f640608a6d",
+            "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+            "brand_id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+            "offering_key": "polish_draft",
+            "title": "Polish: office lunch article",
+            "status": "submitted",
+            "due_at": "2026-11-20T10:59:28.225+00:00",
+            "assignee_id": null,
+            "revisions_used": 0,
+            "submitted_at": "2026-11-18T10:59:28.225+00:00",
+            "delivered_at": null,
+            "updated_at": "2026-11-18T10:59:28.243737+00:00",
+            "brandName": "Annapurna Tiffins"
+          }
+        ],
+        "role": "manager"
+      }
+    },
+    {
+      "n": 25,
+      "name": "A10 manager gets specialist suggestions",
+      "ok": true,
+      "detail": [
+        "25521b12-9fc3-4ea6-a01e-1310eab55336",
+        "5e2be29e-cfdd-490b-8540-febe365d8f8b"
+      ]
+    },
+    {
+      "n": 26,
+      "name": "A11 manager assigns the specialist",
+      "ok": true,
+      "detail": "assigned"
+    },
+    {
+      "n": 27,
+      "name": "A12 another specialist can't open it (404)",
+      "ok": true
+    },
+    {
+      "n": 28,
+      "name": "A13 specialist can't assign (403)",
+      "ok": true
+    },
+    {
+      "n": 29,
+      "name": "A14 specialist sees brief, customer draft and a working link to the reference file",
+      "ok": "http://127.0.0.1:54321/storage/v1/object/sign/media/e060796f-4350-4be2-9229-68f17f32639b/2c2cbb50-a422-4a62-8bd8-034bb06b7671/0315ce42-8a5b-47e2-a33b-d205a98feda8/reference.png?token=[redacted]",
+      "detail": {
+        "refs": 1
+      }
+    },
+    {
+      "n": 30,
+      "name": "A15 reference link serves the uploaded bytes",
+      "ok": true
+    },
+    {
+      "n": 31,
+      "name": "A16 start: round 1 begins from the customer's draft",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "n": 32,
+      "name": "A17 specialist uploads a file to private Storage and attaches it",
+      "ok": true,
+      "detail": {
+        "req": 201,
+        "put": 200,
+        "confirm": 200
+      }
+    },
+    {
+      "n": 33,
+      "name": "A18 attaching a file that was never uploaded is refused",
+      "ok": true,
+      "detail": {
+        "error": {
+          "code": "validation_failed",
+          "message": "The upload wasn't found; upload it again.",
+          "request_id": "4f1e0dad-f22e-488e-8548-6cc927970b3e"
+        }
+      }
+    },
+    {
+      "n": 34,
+      "name": "A19 hand-in goes to QA",
+      "ok": true,
+      "detail": "in_review"
+    },
+    {
+      "n": 35,
+      "name": "A20 customer view: 'Being worked on', no deliverable yet, no QA step, no hold id, no assignee",
+      "ok": true,
+      "detail": {
+        "stage": "Being worked on",
+        "events": [
+          "status:submitted",
+          "hold:",
+          "status:assigned",
+          "status:in_progress"
+        ]
+      }
+    },
+    {
+      "n": 36,
+      "name": "A21 REST: customer can't read hold ids or assignee (column privileges)",
+      "ok": true,
+      "detail": {
+        "status": 403,
+        "body": {
+          "code": "42501",
+          "details": null,
+          "hint": "Grant the required privileges to the current role with: GRANT SELECT ON public.service_requests TO authenticated;",
+          "message": "permission denied for table service_requests"
+        }
+      }
+    },
+    {
+      "n": 37,
+      "name": "A22 REST: customer can't see work in progress",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "n": 38,
+      "name": "A23 REST: customer timeline has no internal entries",
+      "ok": true,
+      "detail": [
+        {
+          "kind": "status",
+          "to_status": "submitted",
+          "visibility": "all"
+        },
+        {
+          "kind": "hold",
+          "to_status": null,
+          "visibility": "all"
+        },
+        {
+          "kind": "status",
+          "to_status": "assigned",
+          "visibility": "all"
+        },
+        {
+          "kind": "status",
+          "to_status": "in_progress",
+          "visibility": "all"
+        }
+      ]
+    },
+    {
+      "n": 39,
+      "name": "A24 REST: customer can't read the ops view",
+      "ok": true,
+      "detail": 403
+    },
+    {
+      "n": 40,
+      "name": "A25 Storage: customer can't download work-in-progress files",
+      "ok": true,
+      "detail": 400
+    },
+    {
+      "n": 41,
+      "name": "A26 Storage: even the specialist reads service files only through API links",
+      "ok": true,
+      "detail": 400
+    },
+    {
+      "n": 42,
+      "name": "A27 Storage: specialist can't read the customer's media library",
+      "ok": true,
+      "detail": 400
+    },
+    {
+      "n": 43,
+      "name": "A28 REST: specialist reads nothing from brands",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "rows": 0
+      }
+    },
+    {
+      "n": 44,
+      "name": "A28 REST: specialist reads nothing from content_items",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "rows": 0
+      }
+    },
+    {
+      "n": 45,
+      "name": "A28 REST: specialist reads nothing from media_assets",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "rows": 0
+      }
+    },
+    {
+      "n": 46,
+      "name": "A28 REST: specialist reads nothing from credit_reservations",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "rows": 0
+      }
+    },
+    {
+      "n": 47,
+      "name": "A28 REST: specialist reads nothing from workspace_members",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "rows": 0
+      }
+    },
+    {
+      "n": 48,
+      "name": "A28 REST: specialist reads nothing from audit_logs",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "rows": 0
+      }
+    },
+    {
+      "n": 49,
+      "name": "A29 REST: unassigned specialist sees no requests",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "n": 50,
+      "name": "A30 REST: customer can't change service state directly",
+      "ok": true,
+      "detail": {
+        "status": 403,
+        "body": {
+          "code": "42501",
+          "details": null,
+          "hint": "Grant the required privileges to the current role with: GRANT SELECT ON public.service_requests TO authenticated;",
+          "message": "permission denied for table service_requests"
+        }
+      }
+    },
+    {
+      "n": 51,
+      "name": "A31 REST: specialist can't promote themselves",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "body": []
+      }
+    },
+    {
+      "n": 52,
+      "name": "A32 QA returns the work with an internal note",
+      "ok": true,
+      "detail": "in_progress"
+    },
+    {
+      "n": 53,
+      "name": "A33 QA approves → delivered to the customer",
+      "ok": true,
+      "detail": "delivered"
+    },
+    {
+      "n": 54,
+      "name": "A34 customer sees the delivery and can download the file via its signed link",
+      "ok": true
+    },
+    {
+      "n": 55,
+      "name": "A35 the delivery carries no QA note",
+      "ok": true
+    },
+    {
+      "n": 56,
+      "name": "A36 first revision is included (no extra hold)",
+      "ok": true,
+      "detail": {
+        "id": "f78a7e3b-38d9-4587-89ce-47f640608a6d",
+        "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+        "brand_id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+        "offering_key": "polish_draft",
+        "title": "Polish: office lunch article",
+        "status": "revision_requested",
+        "intake": {
+          "focus": "Tighten the intro, keep it friendly"
+        },
+        "brief": {
+          "brand": {
+            "name": "Annapurna Tiffins",
+            "fonts": [],
+            "voice": {
+              "do": [],
+              "dont": [],
+              "tone": []
+            },
+            "colors": [],
+            "offers": [],
+            "language": "en",
+            "audiences": [],
+            "bannedWords": [
+              "cheap"
+            ],
+            "disclaimers": [],
+            "claimsPolicy": "strict",
+            "preferredWords": []
+          },
+          "dueAt": "2026-11-20T10:59:28.225Z",
+          "title": "Polish: office lunch article",
+          "source": {
+            "text": "Why office lunch matters\n\nLunch is important. Lunch is very important for teams.",
+            "type": "blog",
+            "title": "Why office lunch matters"
+          },
+          "offering": {
+            "key": "polish_draft",
+            "name": "Human polish",
+            "deliverable": "Finished text in the editor"
+          },
+          "references": [
+            {
+              "kind": "image",
+              "name": "reference.png"
+            }
+          ],
+          "requirements": [
+            {
+              "label": "What should the editor focus on?",
+              "value": "Tighten the intro, keep it friendly"
+            }
+          ],
+          "acceptanceCriteria": [
+            "Sounds like Annapurna Tiffins: follow the voice notes.",
+            "None of these words: cheap.",
+            "Every factual claim (numbers, rankings, results) is backed by the brand kit, the source draft or a cited link.",
+            "Written in en; proofread; no placeholder text.",
+            "Keeps the draft's meaning and facts; explains any fact that was removed or changed."
+          ]
+        },
+        "source_content_item_id": "e6e5ea7e-3b51-4a14-a142-8d14e889b86e",
+        "source_version_id": "801cbd62-4149-42af-9cad-eb100e893ec0",
+        "reference_asset_ids": [
+          "0315ce42-8a5b-47e2-a33b-d205a98feda8"
+        ],
+        "credits": 25,
+        "reservation_id": "098424cf-6722-4d52-9474-3e7d31850d73",
+        "extra_reservation_ids": [],
+        "revisions_included": 1,
+        "revisions_used": 1,
+        "assignee_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+        "qa_by": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+        "due_at": "2026-11-19T10:59:29.333+00:00",
+        "submitted_at": "2026-11-18T10:59:28.225+00:00",
+        "assigned_at": "2026-11-18T10:59:28.614+00:00",
+        "delivered_at": "2026-11-18T10:59:29.202+00:00",
+        "approved_at": null,
+        "cancelled_at": null,
+        "result_content_item_id": null,
+        "result_version_id": null,
+        "result_asset_ids": [],
+        "rating": null,
+        "feedback": null,
+        "lock_version": 8,
+        "created_by": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+        "created_at": "2026-11-18T10:59:28.144679+00:00",
+        "updated_at": "2026-11-18T10:59:29.334074+00:00",
+        "stage": "Revision in progress",
+        "charged": 0
+      }
+    },
+    {
+      "n": 57,
+      "name": "A37 second revision is paid: an extra 5-credit hold",
+      "ok": true,
+      "detail": {
+        "body": {
+          "id": "f78a7e3b-38d9-4587-89ce-47f640608a6d",
+          "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+          "brand_id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+          "offering_key": "polish_draft",
+          "title": "Polish: office lunch article",
+          "status": "revision_requested",
+          "intake": {
+            "focus": "Tighten the intro, keep it friendly"
+          },
+          "brief": {
+            "brand": {
+              "name": "Annapurna Tiffins",
+              "fonts": [],
+              "voice": {
+                "do": [],
+                "dont": [],
+                "tone": []
+              },
+              "colors": [],
+              "offers": [],
+              "language": "en",
+              "audiences": [],
+              "bannedWords": [
+                "cheap"
+              ],
+              "disclaimers": [],
+              "claimsPolicy": "strict",
+              "preferredWords": []
+            },
+            "dueAt": "2026-11-20T10:59:28.225Z",
+            "title": "Polish: office lunch article",
+            "source": {
+              "text": "Why office lunch matters\n\nLunch is important. Lunch is very important for teams.",
+              "type": "blog",
+              "title": "Why office lunch matters"
+            },
+            "offering": {
+              "key": "polish_draft",
+              "name": "Human polish",
+              "deliverable": "Finished text in the editor"
+            },
+            "references": [
+              {
+                "kind": "image",
+                "name": "reference.png"
+              }
+            ],
+            "requirements": [
+              {
+                "label": "What should the editor focus on?",
+                "value": "Tighten the intro, keep it friendly"
+              }
+            ],
+            "acceptanceCriteria": [
+              "Sounds like Annapurna Tiffins: follow the voice notes.",
+              "None of these words: cheap.",
+              "Every factual claim (numbers, rankings, results) is backed by the brand kit, the source draft or a cited link.",
+              "Written in en; proofread; no placeholder text.",
+              "Keeps the draft's meaning and facts; explains any fact that was removed or changed."
+            ]
+          },
+          "source_content_item_id": "e6e5ea7e-3b51-4a14-a142-8d14e889b86e",
+          "source_version_id": "801cbd62-4149-42af-9cad-eb100e893ec0",
+          "reference_asset_ids": [
+            "0315ce42-8a5b-47e2-a33b-d205a98feda8"
+          ],
+          "credits": 25,
+          "reservation_id": "098424cf-6722-4d52-9474-3e7d31850d73",
+          "extra_reservation_ids": [
+            "3d04fd11-dc26-4265-8903-40775d9e0a7c"
+          ],
+          "revisions_included": 1,
+          "revisions_used": 2,
+          "assignee_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+          "qa_by": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+          "due_at": "2026-11-19T10:59:29.587+00:00",
+          "submitted_at": "2026-11-18T10:59:28.225+00:00",
+          "assigned_at": "2026-11-18T10:59:28.614+00:00",
+          "delivered_at": "2026-11-18T10:59:29.493+00:00",
+          "approved_at": null,
+          "cancelled_at": null,
+          "result_content_item_id": null,
+          "result_version_id": null,
+          "result_asset_ids": [],
+          "rating": null,
+          "feedback": null,
+          "lock_version": 12,
+          "created_by": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+          "created_at": "2026-11-18T10:59:28.144679+00:00",
+          "updated_at": "2026-11-18T10:59:29.587375+00:00",
+          "stage": "Revision in progress",
+          "charged": 5
+        },
+        "hold": {
+          "id": "3d04fd11-dc26-4265-8903-40775d9e0a7c",
+          "amount": 5,
+          "status": "held",
+          "settled_amount": null,
+          "expires_at": "2027-01-17T10:59:29.582806+00:00"
+        }
+      }
+    },
+    {
+      "n": 58,
+      "name": "A38 customer approves",
+      "ok": true,
+      "detail": {
+        "id": "f78a7e3b-38d9-4587-89ce-47f640608a6d",
+        "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+        "brand_id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+        "offering_key": "polish_draft",
+        "title": "Polish: office lunch article",
+        "status": "approved",
+        "intake": {
+          "focus": "Tighten the intro, keep it friendly"
+        },
+        "brief": {
+          "brand": {
+            "name": "Annapurna Tiffins",
+            "fonts": [],
+            "voice": {
+              "do": [],
+              "dont": [],
+              "tone": []
+            },
+            "colors": [],
+            "offers": [],
+            "language": "en",
+            "audiences": [],
+            "bannedWords": [
+              "cheap"
+            ],
+            "disclaimers": [],
+            "claimsPolicy": "strict",
+            "preferredWords": []
+          },
+          "dueAt": "2026-11-20T10:59:28.225Z",
+          "title": "Polish: office lunch article",
+          "source": {
+            "text": "Why office lunch matters\n\nLunch is important. Lunch is very important for teams.",
+            "type": "blog",
+            "title": "Why office lunch matters"
+          },
+          "offering": {
+            "key": "polish_draft",
+            "name": "Human polish",
+            "deliverable": "Finished text in the editor"
+          },
+          "references": [
+            {
+              "kind": "image",
+              "name": "reference.png"
+            }
+          ],
+          "requirements": [
+            {
+              "label": "What should the editor focus on?",
+              "value": "Tighten the intro, keep it friendly"
+            }
+          ],
+          "acceptanceCriteria": [
+            "Sounds like Annapurna Tiffins: follow the voice notes.",
+            "None of these words: cheap.",
+            "Every factual claim (numbers, rankings, results) is backed by the brand kit, the source draft or a cited link.",
+            "Written in en; proofread; no placeholder text.",
+            "Keeps the draft's meaning and facts; explains any fact that was removed or changed."
+          ]
+        },
+        "source_content_item_id": "e6e5ea7e-3b51-4a14-a142-8d14e889b86e",
+        "source_version_id": "801cbd62-4149-42af-9cad-eb100e893ec0",
+        "reference_asset_ids": [
+          "0315ce42-8a5b-47e2-a33b-d205a98feda8"
+        ],
+        "credits": 25,
+        "reservation_id": "098424cf-6722-4d52-9474-3e7d31850d73",
+        "extra_reservation_ids": [
+          "3d04fd11-dc26-4265-8903-40775d9e0a7c"
+        ],
+        "revisions_included": 1,
+        "revisions_used": 2,
+        "assignee_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+        "qa_by": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+        "due_at": "2026-11-19T10:59:29.587+00:00",
+        "submitted_at": "2026-11-18T10:59:28.225+00:00",
+        "assigned_at": "2026-11-18T10:59:28.614+00:00",
+        "delivered_at": "2026-11-18T10:59:29.796+00:00",
+        "approved_at": "2026-11-18T10:59:29.962+00:00",
+        "cancelled_at": null,
+        "result_content_item_id": "e6e5ea7e-3b51-4a14-a142-8d14e889b86e",
+        "result_version_id": "73a60ce7-806b-4d3b-af5d-b983f6f1e121",
+        "result_asset_ids": [
+          "b4923209-f85f-46bc-b6e9-3e1f2dff8ee3"
+        ],
+        "rating": 5,
+        "feedback": "Great work",
+        "lock_version": 16,
+        "created_by": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+        "created_at": "2026-11-18T10:59:28.144679+00:00",
+        "updated_at": "2026-11-18T10:59:29.961906+00:00",
+        "stage": "Approved",
+        "resultContentItemId": "e6e5ea7e-3b51-4a14-a142-8d14e889b86e",
+        "resultAssetIds": [
+          "b4923209-f85f-46bc-b6e9-3e1f2dff8ee3"
+        ]
+      }
+    },
+    {
+      "n": 59,
+      "name": "A39 approved text is a new version of the original draft (v2, human, transform=service)",
+      "ok": true,
+      "detail": {
+        "version": 2,
+        "origin": "human",
+        "transform": "service"
+      }
+    },
+    {
+      "n": 60,
+      "name": "A40 approved file is in the media library (source=service) and stored in the media bucket",
+      "ok": true,
+      "detail": [
+        {
+          "id": "b4923209-f85f-46bc-b6e9-3e1f2dff8ee3",
+          "storage_path": "e060796f-4350-4be2-9229-68f17f32639b/2c2cbb50-a422-4a62-8bd8-034bb06b7671/b4923209-f85f-46bc-b6e9-3e1f2dff8ee3/cover.png",
+          "status": "ready",
+          "mime_type": "image/png",
+          "title": "cover.png"
+        }
+      ]
+    },
+    {
+      "n": 61,
+      "name": "A41 both holds settled (25 + 5)",
+      "ok": true,
+      "detail": [
+        {
+          "id": "098424cf-6722-4d52-9474-3e7d31850d73",
+          "amount": 25,
+          "status": "settled",
+          "settled_amount": 25,
+          "expires_at": "2027-01-17T10:59:28.233436+00:00"
+        },
+        {
+          "id": "3d04fd11-dc26-4265-8903-40775d9e0a7c",
+          "amount": 5,
+          "status": "settled",
+          "settled_amount": 5,
+          "expires_at": "2027-01-17T10:59:29.582806+00:00"
+        }
+      ]
+    },
+    {
+      "n": 62,
+      "name": "A42 wallet: balance −30, held −30",
+      "ok": true,
+      "detail": {
+        "before": {
+          "balance": 1100,
+          "held": 30
+        },
+        "after": {
+          "balance": 1070,
+          "held": 0
+        }
+      }
+    },
+    {
+      "n": 63,
+      "name": "B1 cancel after assignment (before work) is allowed",
+      "ok": true,
+      "detail": {
+        "id": "8c6f02d1-6e2f-4c8f-bb9c-606e9e79ed46",
+        "workspace_id": "e060796f-4350-4be2-9229-68f17f32639b",
+        "brand_id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+        "offering_key": "expert_article",
+        "title": "Article: tiffin plans explained",
+        "status": "cancelled",
+        "intake": {
+          "topic": "How our tiffin plans work"
+        },
+        "brief": {
+          "brand": {
+            "name": "Annapurna Tiffins",
+            "fonts": [],
+            "voice": {
+              "do": [],
+              "dont": [],
+              "tone": []
+            },
+            "colors": [],
+            "offers": [],
+            "language": "en",
+            "audiences": [],
+            "bannedWords": [
+              "cheap"
+            ],
+            "disclaimers": [],
+            "claimsPolicy": "strict",
+            "preferredWords": []
+          },
+          "dueAt": "2026-11-23T10:59:30.079Z",
+          "title": "Article: tiffin plans explained",
+          "offering": {
+            "key": "expert_article",
+            "name": "Expert-written article",
+            "deliverable": "Finished text in the editor"
+          },
+          "references": [],
+          "requirements": [
+            {
+              "label": "Topic or working title",
+              "value": "How our tiffin plans work"
+            }
+          ],
+          "acceptanceCriteria": [
+            "Sounds like Annapurna Tiffins: follow the voice notes.",
+            "None of these words: cheap.",
+            "Every factual claim (numbers, rankings, results) is backed by the brand kit, the source draft or a cited link.",
+            "Written in en; proofread; no placeholder text."
+          ]
+        },
+        "source_content_item_id": null,
+        "source_version_id": null,
+        "reference_asset_ids": [],
+        "credits": 120,
+        "reservation_id": "65abc240-6da0-422b-8964-f7cda920e176",
+        "extra_reservation_ids": [],
+        "revisions_included": 2,
+        "revisions_used": 0,
+        "assignee_id": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+        "qa_by": null,
+        "due_at": "2026-11-23T10:59:30.079+00:00",
+        "submitted_at": "2026-11-18T10:59:30.079+00:00",
+        "assigned_at": "2026-11-18T10:59:30.166+00:00",
+        "delivered_at": null,
+        "approved_at": null,
+        "cancelled_at": "2026-11-18T10:59:30.216+00:00",
+        "result_content_item_id": null,
+        "result_version_id": null,
+        "result_asset_ids": [],
+        "rating": null,
+        "feedback": null,
+        "lock_version": 3,
+        "created_by": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+        "created_at": "2026-11-18T10:59:30.051974+00:00",
+        "updated_at": "2026-11-18T10:59:30.215481+00:00",
+        "stage": "Cancelled"
+      }
+    },
+    {
+      "n": 64,
+      "name": "B2 the full 120-credit hold is released; wallet back to where it was",
+      "ok": true,
+      "detail": {
+        "hold": {
+          "id": "65abc240-6da0-422b-8964-f7cda920e176",
+          "amount": 120,
+          "status": "released",
+          "settled_amount": null,
+          "expires_at": "2027-01-17T10:59:30.082873+00:00"
+        },
+        "before": {
+          "balance": 1070,
+          "held": 0
+        },
+        "after": {
+          "balance": 1070,
+          "held": 0
+        }
+      }
+    },
+    {
+      "n": 65,
+      "name": "B3 cancel is refused once work has started",
+      "ok": true
+    },
+    {
+      "n": 66,
+      "name": "C1 upkeep extends a hold about to expire (to ~30 days)",
+      "ok": true,
+      "detail": {
+        "result": {
+          "extended": 1,
+          "lost": 0,
+          "overdue": 0,
+          "reminded": 0
+        },
+        "hold": {
+          "id": "fc6a1136-d49a-4115-8948-8189cd9c9ba3",
+          "amount": 30,
+          "status": "held",
+          "settled_amount": null,
+          "expires_at": "2026-12-18T10:59:30.574+00:00"
+        }
+      }
+    },
+    {
+      "n": 67,
+      "name": "C2 the platform's expiry job expires an overdue hold",
+      "ok": true,
+      "detail": {
+        "exp": 1,
+        "hold": {
+          "id": "fc6a1136-d49a-4115-8948-8189cd9c9ba3",
+          "amount": 30,
+          "status": "expired",
+          "settled_amount": null,
+          "expires_at": "2026-11-18T10:58:30.603+00:00"
+        }
+      }
+    },
+    {
+      "n": 68,
+      "name": "C3 upkeep reports the lost hold and the overdue request",
+      "ok": true,
+      "detail": {
+        "extended": 0,
+        "lost": 1,
+        "overdue": 1,
+        "reminded": 0
+      }
+    },
+    {
+      "n": 69,
+      "name": "C4 manager notified: hold lost + overdue",
+      "ok": true,
+      "detail": [
+        {
+          "kind": "staff.overdue",
+          "title": "Overdue: Review: Diwali ad"
+        },
+        {
+          "kind": "staff.hold_lost",
+          "title": "Credit hold lost: Review: Diwali ad"
+        }
+      ]
+    },
+    {
+      "n": 70,
+      "name": "C5 running upkeep again sends no duplicates",
+      "ok": true,
+      "detail": {
+        "first": 2,
+        "second": 2,
+        "m3": {
+          "extended": 0,
+          "lost": 1,
+          "overdue": 1,
+          "reminded": 0
+        }
+      }
+    },
+    {
+      "n": 71,
+      "name": "C6 an offering without QA delivers straight to the customer",
+      "ok": true,
+      "detail": "delivered"
+    },
+    {
+      "n": 72,
+      "name": "C7 approval re-holds the expired credits, then charges them (30)",
+      "ok": true,
+      "detail": {
+        "approve": 200,
+        "recharge": [
+          {
+            "id": "3a85efea-c299-45aa-84fe-60b04d9f83b4",
+            "amount": 30,
+            "status": "settled",
+            "settled_amount": 30
+          }
+        ],
+        "before": {
+          "balance": 1070,
+          "held": 120
+        },
+        "after": {
+          "balance": 1040,
+          "held": 120
+        }
+      }
+    },
+    {
+      "n": 73,
+      "name": "M1 inbox responds with per-kind counts",
+      "ok": true,
+      "detail": {
+        "contentApprovals": 0,
+        "serviceDeliveries": 0,
+        "adRequests": 0
+      }
+    },
+    {
+      "n": 74,
+      "name": "M2 agenda responds (cursor paging)",
+      "ok": true,
+      "detail": {
+        "data": [],
+        "next_cursor": null
+      }
+    },
+    {
+      "n": 75,
+      "name": "M3 publishing status responds",
+      "ok": true,
+      "detail": {
+        "data": [],
+        "next_cursor": null
+      }
+    },
+    {
+      "n": 76,
+      "name": "M4 quick-create options: brand ready, prices listed",
+      "ok": true,
+      "detail": [
+        {
+          "id": "2c2cbb50-a422-4a62-8bd8-034bb06b7671",
+          "name": "Annapurna Tiffins",
+          "languages": [
+            "en"
+          ],
+          "ready": true
+        }
+      ]
+    },
+    {
+      "n": 77,
+      "name": "M5 notification feed with unread count",
+      "ok": true,
+      "detail": {
+        "unread": 15
+      }
+    },
+    {
+      "n": 78,
+      "name": "M6 mark all read",
+      "ok": true,
+      "detail": {
+        "updated": {
+          "updated": 15
+        },
+        "unread": 0
+      }
+    },
+    {
+      "n": 79,
+      "name": "M7 desk list (all) responds with brand names",
+      "ok": true,
+      "detail": 4
+    },
+    {
+      "n": 80,
+      "name": "O1 manager ops view: workload, SLA and holds",
+      "ok": true,
+      "detail": {
+        "open": 1,
+        "unassigned": 0,
+        "overdue": 0,
+        "dueSoon": 0,
+        "awaitingCustomer": 0,
+        "creditsHeld": 120,
+        "holdsExpiringWithin7Days": 0,
+        "holdsLost": 0
+      }
+    },
+    {
+      "n": 81,
+      "name": "O2 specialist can't open ops (403)",
+      "ok": true
+    },
+    {
+      "n": 82,
+      "name": "O3 admin ops endpoint works with the admin token only",
+      "ok": true
+    },
+    {
+      "n": 83,
+      "name": "AU1 every Flow A transition is in the audit log",
+      "ok": true,
+      "detail": [
+        "submitted",
+        "assigned",
+        "in_progress",
+        "in_review",
+        "in_progress",
+        "in_review",
+        "delivered",
+        "revision_requested",
+        "in_progress",
+        "in_review",
+        "delivered",
+        "revision_requested",
+        "in_progress",
+        "in_review",
+        "delivered",
+        "approved"
+      ]
+    },
+    {
+      "n": 84,
+      "name": "AU2 each transition is attributed to the person who made it",
+      "ok": true,
+      "detail": {
+        "submitted": "940b1c16-e544-4a4e-ab28-8cb55797ea07",
+        "assigned": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+        "started": "25521b12-9fc3-4ea6-a01e-1310eab55336",
+        "delivered": "c8e05fb7-757d-4c06-8866-993c381e8a15",
+        "approved": "940b1c16-e544-4a4e-ab28-8cb55797ea07"
+      }
+    },
+    {
+      "n": 85,
+      "name": "AU3 holds, charges, files and assignments are audited too",
+      "ok": true,
+      "detail": [
+        "service.status:submitted",
+        "service.hold",
+        "service.status:assigned",
+        "service.assigned",
+        "service.status:in_progress",
+        "service.file_added",
+        "service.status:in_review",
+        "service.status:in_progress",
+        "service.status:in_review",
+        "service.status:delivered",
+        "service.status:revision_requested",
+        "service.status:in_progress",
+        "service.status:in_review",
+        "service.status:delivered",
+        "service.status:revision_requested",
+        "service.hold",
+        "service.status:in_progress",
+        "service.status:in_review",
+        "service.status:delivered",
+        "service.status:approved",
+        "service.charge"
+      ]
+    },
+    {
+      "n": 86,
+      "name": "AU4 hold extension and loss are audited (system actor)",
+      "ok": true,
+      "detail": [
+        "service.status:submitted",
+        "service.hold",
+        "service.status:assigned",
+        "service.assigned",
+        "service.hold_extended",
+        "service.hold_lost",
+        "service.hold_lost",
+        "service.status:in_progress",
+        "service.status:delivered",
+        "service.hold",
+        "service.status:approved",
+        "service.charge"
+      ]
+    },
+    {
+      "n": 87,
+      "name": "N1 customer got: received, assigned, delivered, approved, cancelled",
+      "ok": true,
+      "detail": [
+        "customer.received",
+        "customer.assigned",
+        "customer.delivered",
+        "customer.approved",
+        "customer.cancelled"
+      ]
+    },
+    {
+      "n": 88,
+      "name": "N2 specialist got: assigned, QA returned, revision requested, approved, cancelled, overdue",
+      "ok": true,
+      "detail": [
+        "staff.assigned",
+        "staff.qa_returned",
+        "staff.revision_requested",
+        "staff.approved",
+        "staff.cancelled",
+        "staff.overdue"
+      ]
+    },
+    {
+      "n": 89,
+      "name": "N3 no customer notification contains QA notes, internal notes, staff names or hold ids",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "n": 90,
+      "name": "P1 push: the customer's device received encrypted, VAPID-signed pushes that decrypt",
+      "ok": true,
+      "detail": [
+        "We've got your request: Polish: office lunch article",
+        "A specialist is working on: Polish: office lunch article",
+        "Ready for your review: Polish: office lunch article",
+        "Ready for your review: Polish: office lunch article",
+        "Ready for your review: Polish: office lunch article",
+        "Approved: Polish: office lunch article",
+        "We've got your request: Article: tiffin plans explained",
+        "A specialist is working on: Article: tiffin plans explained",
+        "Cancelled: Article: tiffin plans explained",
+        "We've got your request: Article started",
+        "A specialist is working on: Article started",
+        "We've got your request: Review: Diwali ad",
+        "A specialist is working on: Review: Diwali ad",
+        "Ready for your review: Review: Diwali ad",
+        "Approved: Review: Diwali ad"
+      ]
+    },
+    {
+      "n": 91,
+      "name": "P2 push payloads carry no internal text either",
+      "ok": true
+    },
+    {
+      "n": 92,
+      "name": "P3 a dead push endpoint (410) is removed automatically",
+      "ok": true,
+      "detail": [
+        {
+          "endpoint": "https://localhost:62890/push/owner"
+        }
+      ]
+    },
+    {
+      "n": 93,
+      "name": "P4 delivery outcome recorded on the notification",
+      "ok": true,
+      "detail": [
+        {
+          "at": "2026-11-18T10:59:28.489Z",
+          "push": [
+            {
+              "ok": true,
+              "status": 201
+            },
+            {
+              "ok": false,
+              "status": 410,
+              "expired": true
+            }
+          ],
+          "email": {
+            "sent": true
+          }
+        },
+        {
+          "at": "2026-11-18T10:59:28.656Z",
+          "push": [
+            {
+              "ok": true,
+              "status": 201
+            }
+          ],
+          "email": null
+        }
+      ]
+    },
+    {
+      "n": 94,
+      "name": "E1 customer emails: received, delivered, approved, cancelled",
+      "ok": true,
+      "detail": [
+        "Approved: Review: Diwali ad",
+        "Ready for your review: Review: Diwali ad",
+        "We've got your request: Review: Diwali ad",
+        "We've got your request: Article started",
+        "Cancelled: Article: tiffin plans explained",
+        "We've got your request: Article: tiffin plans explained",
+        "Approved: Polish: office lunch article",
+        "Ready for your review: Polish: office lunch article",
+        "Ready for your review: Polish: office lunch article",
+        "Ready for your review: Polish: office lunch article",
+        "We've got your request: Polish: office lunch article"
+      ]
+    },
+    {
+      "n": 95,
+      "name": "E2 staff emails: new request (manager), assigned + revision (specialist)",
+      "ok": true,
+      "detail": {
+        "manager": [
+          "New request: Review: Diwali ad",
+          "New request: Article started",
+          "New request: Article: tiffin plans explained",
+          "New request: Polish: office lunch article"
+        ],
+        "spec": [
+          "Approved by the customer: Review: Diwali ad",
+          "Assigned to you: Review: Diwali ad",
+          "Assigned to you: Article started",
+          "Cancelled by the customer: Article: tiffin plans explained",
+          "Assigned to you: Article: tiffin plans explained",
+          "Approved by the customer: Polish: office lunch article",
+          "Revision requested: Polish: office lunch article",
+          "Revision requested: Polish: office lunch article",
+          "Assigned to you: Polish: office lunch article"
+        ]
+      }
+    },
+    {
+      "n": 96,
+      "name": "E3 nothing was emailed to a non-allowlisted address",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "n": 97,
+      "name": "E4 the blocked email is recorded as refused, not sent",
+      "ok": true,
+      "detail": {
+        "at": "2026-11-18T10:59:30.715Z",
+        "push": [],
+        "email": {
+          "sent": false,
+          "reason": "recipient not on the staging allowlist"
+        }
+      }
+    },
+    {
+      "n": 98,
+      "name": "E5 customer email bodies contain no internal notes, staff names or hold ids",
+      "ok": true
+    }
+  ]
+}
