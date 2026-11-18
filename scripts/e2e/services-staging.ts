@@ -356,6 +356,30 @@ async function main() {
   const wC1 = await wallet();
   check("C7 approval re-holds the expired credits, then charges them (30)", apC.status === 200 && rC2.status === "approved" && recharge[0]?.status === "settled" && Number(recharge[0].settled_amount) === 30 && Number(wC0.balance) - Number(wC1.balance) === 30, { approve: apC.status, recharge, before: wC0, after: wC1 });
 
+  // ============================================================ Flow D: 3-day "waiting for your review" reminders (real DB, real notifier)
+  const D = (await call(owner.token, "POST", S("/services"), { offeringKey: "ad_review", title: "Review: Navratri ad", intake: { campaign: "Navratri display ads" } })).body.id as string;
+  await call(owner.token, "POST", S(`/services/${D}/submit`));
+  await call(manager.token, "POST", `/v1/desk/requests/${D}/assign`, { userId: spec.id });
+  await call(spec.token, "POST", `/v1/desk/requests/${D}/start`);
+  await call(spec.token, "PUT", `/v1/desk/requests/${D}/deliverable`, { doc: { format: 1, blocks: [{ id: "b1", kind: "paragraph", text: "Swap the stock photo for a product shot.", origin: "human" }] }, note: "Done." });
+  const handD = await call(spec.token, "POST", `/v1/desk/requests/${D}/submit`);
+  const awaiting = async () => (await svcGet(`notifications?user_id=eq.${owner.id}&kind=eq.customer.awaiting_approval&select=id,title,body,link,data,dedupe_key`)).filter((n: { dedupe_key: string | null }) => n.dedupe_key?.startsWith(`awaiting:${D}:`));
+  const ago = (d: number) => new Date(Date.now() - d * 86_400_000 - 3600_000).toISOString();
+  await rest(SERVICE, `service_requests?id=eq.${D}`, { method: "PATCH", body: JSON.stringify({ delivered_at: ago(1) }) });
+  await upkeep.serviceMaintenance();
+  check("D1 delivered 1 day ago → no reminder yet", handD.body.status === "delivered" && (await awaiting()).length === 0, handD.body.status);
+  await rest(SERVICE, `service_requests?id=eq.${D}`, { method: "PATCH", body: JSON.stringify({ delivered_at: ago(4) }) });
+  const d2 = await upkeep.serviceMaintenance();
+  const aw1 = await awaiting();
+  check("D2 waiting 4 days → one reminder to the customer", d2.reminded >= 1 && aw1.length === 1 && /Waiting for your review/.test(aw1[0].title), { result: d2, notes: aw1.map((n: { title: string }) => n.title) });
+  await upkeep.serviceMaintenance(); await upkeep.serviceMaintenance();
+  check("D3 running upkeep again (idempotent) sends no duplicate", (await awaiting()).length === 1, (await awaiting()).length);
+  await rest(SERVICE, `service_requests?id=eq.${D}`, { method: "PATCH", body: JSON.stringify({ delivered_at: ago(7) }) });
+  await upkeep.serviceMaintenance();
+  check("D4 still waiting at 7 days → a second reminder (every 3 days)", (await awaiting()).length === 2, (await awaiting()).map((n: { body: string }) => n.body));
+  check("D5 reminder deep-links into the request and leaks nothing internal", (await awaiting()).every((n: { link: string; title: string; body: string }) => n.link.includes(D) && !/INTERNAL|QA-|hold/i.test(n.title + n.body)), (await awaiting())[0]?.link);
+  evidence.flowD_reminders = await awaiting();
+
   // ============================================================ mobile-ready endpoints on the real stack
   const inbox = await call(owner.token, "GET", `/v1/workspaces/${ws}/inbox`);
   check("M1 inbox responds with per-kind counts", inbox.status === 200 && typeof inbox.body.counts?.serviceDeliveries === "number", inbox.body?.counts ?? inbox.body);
