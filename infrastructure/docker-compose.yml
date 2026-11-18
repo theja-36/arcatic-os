@@ -1,0 +1,182 @@
+# Arcatic local infrastructure. Supabase runs via `supabase start` (CLI), not here.
+# Profiles let you start only the planes you work on:
+#   core          Temporal + UI                         (required for jobs)
+#   observability Langfuse                              (AI traces)
+#   ingest        Firecrawl, Docling Serve              (Phase 2/3)
+#   ai            Langflow                              (Phase 2+)
+#   gpu           ComfyUI                               (Phase 5, NVIDIA host)
+#   publish       Postiz                                (Phase 7)
+#   billing       Lago                                  (Phase 10)
+#   analytics     Matomo                                (Phase 8)
+# Third-party services stay on the private `arcatic` network; only dev ports are published.
+# Pin images to tags you have reviewed before staging/production (docs/08).
+
+name: arcatic
+
+x-restart: &restart
+  restart: unless-stopped
+  networks: [arcatic]
+
+services:
+  # ---------------- core ----------------
+  temporal-postgres:
+    <<: *restart
+    profiles: [core]
+    image: postgres:16
+    environment: { POSTGRES_USER: temporal, POSTGRES_PASSWORD: temporal }
+    volumes: [temporal-pg:/var/lib/postgresql/data]
+
+  temporal:
+    <<: *restart
+    profiles: [core]
+    image: temporalio/auto-setup:1.28.1          # same tag Postiz's compose uses
+    depends_on: [temporal-postgres]
+    environment:
+      DB: postgres12
+      DB_PORT: 5432
+      POSTGRES_USER: temporal
+      POSTGRES_PWD: temporal
+      POSTGRES_SEEDS: temporal-postgres
+    ports: ["7233:7233"]
+
+  temporal-ui:
+    <<: *restart
+    profiles: [core]
+    image: temporalio/ui:2.34.0
+    depends_on: [temporal]
+    environment: { TEMPORAL_ADDRESS: temporal:7233, TEMPORAL_CORS_ORIGINS: "http://localhost:8233" }
+    ports: ["8233:8080"]
+
+  # ---------------- observability: Langfuse (compose mirrors langfuse-main/docker-compose.yml) ----------------
+  langfuse-postgres:
+    <<: *restart
+    profiles: [observability]
+    image: postgres:17
+    environment: { POSTGRES_USER: langfuse, POSTGRES_PASSWORD: langfuse, POSTGRES_DB: langfuse }
+    volumes: [langfuse-pg:/var/lib/postgresql/data]
+  langfuse-clickhouse:
+    <<: *restart
+    profiles: [observability]
+    image: clickhouse/clickhouse-server:26.3.62.3
+    environment: { CLICKHOUSE_DB: default, CLICKHOUSE_USER: clickhouse, CLICKHOUSE_PASSWORD: clickhouse }
+    volumes: [langfuse-ch:/var/lib/clickhouse]
+  langfuse-redis:
+    <<: *restart
+    profiles: [observability]
+    image: redis:7
+    command: ["--requirepass", "langfuse"]
+  langfuse-minio:
+    <<: *restart
+    profiles: [observability]
+    image: cgr.dev/chainguard/minio
+    entrypoint: sh
+    command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" /data'
+    environment: { MINIO_ROOT_USER: minio, MINIO_ROOT_PASSWORD: miniosecret }
+    volumes: [langfuse-minio:/data]
+  langfuse-worker: &langfuse
+    <<: *restart
+    profiles: [observability]
+    image: docker.langfuse.com/langfuse/langfuse-worker:4
+    depends_on: [langfuse-postgres, langfuse-clickhouse, langfuse-redis, langfuse-minio]
+    env_file: [{ path: env/langfuse.env, required: false }]   # copy env/langfuse.env.example
+  langfuse-web:
+    <<: *langfuse
+    image: docker.langfuse.com/langfuse/langfuse:4
+    ports: ["3100:3000"]
+
+  # ---------------- ingest ----------------
+  # Firecrawl: run from firecrawl-main (its compose builds API, workers, Playwright, NuQ Postgres,
+  # RabbitMQ, Redis). Keep USE_DB_AUTHENTICATION=false only on this private network:
+  #   docker compose -f ../firecrawl-main/docker-compose.yaml up -d   → http://localhost:3002
+  docling:
+    <<: *restart
+    profiles: [ingest]
+    image: quay.io/docling-project/docling-serve:latest   # pin a reviewed tag before staging
+    environment: { DOCLING_SERVE_API_KEY: "${DOCLING_API_KEY:-}" }
+    ports: ["5001:5001"]
+
+  # Embeddings: BAAI/bge-m3 (1024 dims, multilingual incl. Telugu) on HF text-embeddings-inference.
+  # First start downloads ~2.3 GB of weights. Image tag not verified locally — pin before staging.
+  embeddings:
+    <<: *restart
+    profiles: [ingest]
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-latest
+    command: ["--model-id", "BAAI/bge-m3", "--max-client-batch-size", "64"]
+    volumes: [tei-data:/data]
+    ports: ["8080:80"]
+
+  # Whisper (OpenAI-compatible /v1/audio/transcriptions) via speaches (faster-whisper).
+  # Not verified locally — pin and smoke-test before staging; use the CUDA image on GPU nodes.
+  whisper:
+    <<: *restart
+    profiles: [ingest]
+    image: ghcr.io/speaches-ai/speaches:latest-cpu
+    volumes: [whisper-cache:/home/ubuntu/.cache/huggingface]
+    ports: ["9000:8000"]
+
+  # ---------------- ai ----------------
+  langflow:
+    <<: *restart
+    profiles: [ai]
+    image: langflowai/langflow:latest                     # pin in Phase 2
+    environment: { LANGFLOW_AUTO_LOGIN: "false" }
+    env_file: [{ path: env/langflow.env, required: false }]   # LANGFLOW_SUPERUSER / LANGFLOW_SUPERUSER_PASSWORD
+    ports: ["7860:7860"]
+
+  # ---------------- gpu ----------------
+  comfyui:
+    <<: *restart
+    profiles: [gpu]
+    build: { context: ../../ComfyUI-master, dockerfile: ../arcatic-os/infrastructure/comfyui.Dockerfile }
+    deploy: { resources: { reservations: { devices: [{ driver: nvidia, count: 1, capabilities: [gpu] }] } } }
+    volumes: [comfy-models:/app/models, comfy-output:/app/output]
+    ports: ["8188:8188"]
+
+  # ---------------- publish ----------------
+  # Postiz brings its own Postgres/Redis/Temporal stack; run it from its folder and point
+  # POSTIZ_URL at it (default http://localhost:4007/api):
+  #   docker compose -f ../postiz-app-main/docker-compose.yaml up -d
+
+  # ---------------- billing ----------------
+  # Lago (images getlago/api:v1.57.0, getlago/front:v1.57.0):
+  #   docker compose -f ../lago-main/docker-compose.yml up -d
+
+  # ---------------- analytics ----------------
+  matomo-db:
+    <<: *restart
+    profiles: [analytics]
+    image: mariadb:11
+    environment: { MARIADB_ROOT_PASSWORD: matomo, MARIADB_DATABASE: matomo, MARIADB_USER: matomo, MARIADB_PASSWORD: matomo }
+    volumes: [matomo-db:/var/lib/mysql]
+  matomo:
+    <<: *restart
+    profiles: [analytics]
+    image: matomo:5
+    depends_on: [matomo-db]
+    environment: { MATOMO_DATABASE_HOST: matomo-db, MATOMO_DATABASE_USERNAME: matomo, MATOMO_DATABASE_PASSWORD: matomo, MATOMO_DATABASE_DBNAME: matomo }
+    ports: ["8081:80"]
+  # Google Ads + Meta insights through their official Python SDKs (services/ads-sync)
+  ads-sync:
+    <<: *restart
+    profiles: [analytics]
+    build: { context: ../services/ads-sync }
+    environment:
+      ADS_SYNC_SECRET: ${ADS_SYNC_SECRET:?set ADS_SYNC_SECRET}
+      GOOGLE_ADS_DEVELOPER_TOKEN: ${GOOGLE_ADS_DEVELOPER_TOKEN:-}
+      GOOGLE_ADS_CLIENT_ID: ${GOOGLE_ADS_CLIENT_ID:-}
+      GOOGLE_ADS_CLIENT_SECRET: ${GOOGLE_ADS_CLIENT_SECRET:-}
+    ports: ["8090:8090"]
+
+networks:
+  arcatic: {}
+
+volumes:
+  tei-data: {}
+  whisper-cache: {}
+  temporal-pg: {}
+  langfuse-pg: {}
+  langfuse-ch: {}
+  langfuse-minio: {}
+  comfy-models: {}
+  comfy-output: {}
+  matomo-db: {}

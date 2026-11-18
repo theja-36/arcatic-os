@@ -1,0 +1,16 @@
+node_modules
+.env
+.env.*
+!.env.example
+dist
+.next
+.turbo
+coverage
+supabase/.temp
+*.log
+.DS_Store
+infrastructure/env/*.env
+*.tsbuildinfo
+__pycache__/
+*.pyc
+supabase/.branches

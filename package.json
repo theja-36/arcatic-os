@@ -1,0 +1,37 @@
+{
+  "name": "arcatic-os",
+  "private": true,
+  "packageManager": "pnpm@10.6.1",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "db:start": "supabase start",
+    "db:reset": "supabase db reset",
+    "db:types": "supabase gen types typescript --local > packages/database/src/types.gen.ts",
+    "infra:core": "docker compose -f infrastructure/docker-compose.yml --profile core up -d",
+    "verify:render": "docker build -q -t arcatic-ffmpeg:test -f infrastructure/ffmpeg.Dockerfile infrastructure >/dev/null && tsx scripts/verify-render.ts",
+    "lago:setup": "tsx scripts/lago-setup.ts"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "@swc/core",
+      "@temporalio/core-bridge",
+      "sharp",
+      "protobufjs"
+    ]
+  }
+}
