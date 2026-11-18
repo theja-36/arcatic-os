@@ -1,0 +1,38 @@
+/* Arcatic design tokens. Brand-themable via --accent; dark mode via prefers-color-scheme or [data-theme]. */
+:root {
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --surface-2: #f0efec;
+  --border: #e3e1dc;
+  --text: #1c1b19;
+  --text-muted: #6b6862;
+  --accent: #0f766e;
+  --accent-fg: #ffffff;
+  --danger: #b42318;
+  --warning: #b54708;
+  --success: #067647;
+  --radius: 10px;
+  --font-sans: "Inter", "Noto Sans Telugu", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121211;
+    --surface: #1b1a19;
+    --surface-2: #242321;
+    --border: #2f2d2a;
+    --text: #f2f1ee;
+    --text-muted: #a3a09a;
+    --accent: #2dd4bf;
+    --accent-fg: #062b27;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121211;
+  --surface: #1b1a19;
+  --surface-2: #242321;
+  --border: #2f2d2a;
+  --text: #f2f1ee;
+  --text-muted: #a3a09a;
+  --accent: #2dd4bf;
+  --accent-fg: #062b27;
+}
