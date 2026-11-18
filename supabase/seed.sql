@@ -1,0 +1,3 @@
+-- Local seed. Reference data (roles, permissions, plans) lives in migrations because
+-- production needs it too. Create a local user via the Studio or magic link, then
+-- call create_organization from the app's onboarding screen.
