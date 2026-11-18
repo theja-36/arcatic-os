@@ -1,0 +1,733 @@
+{
+  "target": "local-staging",
+  "run": "20261118130612",
+  "reads": {
+    "total": 84,
+    "ownerOk": 56,
+    "serverErrors": 6
+  },
+  "writes": {
+    "total": 16,
+    "failed": 5
+  },
+  "routes": [
+    {
+      "file": "account.ts",
+      "method": "GET",
+      "path": "/v1/me",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "account.ts",
+      "method": "GET",
+      "path": "/v1/workspaces",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "ads.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/ads/accounts",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "ads.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/ads/accounts/00000000-0000-4000-8000-0000000000aa/search",
+      "owner": 409,
+      "viewer": 403
+    },
+    {
+      "file": "ads.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/ads/campaigns",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "ads.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/ads/campaigns/d65864a3-6c79-472c-869a-612d5e0ed43f",
+      "owner": 404,
+      "viewer": 403
+    },
+    {
+      "file": "ads.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/ads/requests",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "ads.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/ads/campaigns/d65864a3-6c79-472c-869a-612d5e0ed43f/report",
+      "owner": 404,
+      "viewer": 403
+    },
+    {
+      "file": "analytics.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/analytics/connections",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "analytics.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/analytics/sync-runs",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "analytics.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/analytics/overview",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "analytics.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/analytics/breakdown",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "analytics.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/insights",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "analytics.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/learning",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "billing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/billing",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "billing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/billing/usage",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "billing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/billing/portal",
+      "owner": 500,
+      "viewer": 403,
+      "note": "{\"error\":{\"code\":\"internal\",\"message\":\"Could not embed because more than one relationship was found for 'workspace_members' and 'users'\",\"request_id\":\"df14d171-e05f-4179-8eec-223ffabc96ac\"}}"
+    },
+    {
+      "file": "billing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/service-ops",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "brand-kit.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/onboarding",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "brand-kit.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/kit",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "brand-kit.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/kit/versions",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "brand-kit.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/kit/versions/00000000-0000-4000-8000-0000000000aa",
+      "owner": 422,
+      "viewer": 422
+    },
+    {
+      "file": "brand-kit.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/kit/impact",
+      "owner": 422,
+      "viewer": 422
+    },
+    {
+      "file": "brand-kit.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/context",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "campaigns.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/campaigns",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "campaigns.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/campaigns/d65864a3-6c79-472c-869a-612d5e0ed43f",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "campaigns.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/plan",
+      "owner": 422,
+      "viewer": 422
+    },
+    {
+      "file": "campaigns.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/seasonal-events",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "content.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/content",
+      "owner": 500,
+      "viewer": 500,
+      "note": "{\"error\":{\"code\":\"internal\",\"message\":\"Could not find a relationship between 'content_items' and 'content_versions' in the schema cache\",\"request_id\":\"99ffdd7a-9318-4aa9-bd20-f5879ee473d0\"}}"
+    },
+    {
+      "file": "content.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/content/<item>",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "content.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/content/<item>/versions",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "content.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/content/<item>/versions/00000000-0000-4000-8000-0000000000aa",
+      "owner": 422,
+      "viewer": 422
+    },
+    {
+      "file": "content.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/approvals",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "desk.ts",
+      "method": "GET",
+      "path": "/v1/desk/me",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "desk.ts",
+      "method": "GET",
+      "path": "/v1/desk/ops",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "desk.ts",
+      "method": "GET",
+      "path": "/v1/desk/requests",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "desk.ts",
+      "method": "GET",
+      "path": "/v1/desk/requests/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "desk.ts",
+      "method": "GET",
+      "path": "/v1/desk/staff",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "growth.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/projects",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "growth.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/projects/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "growth.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/repurpose/options",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "growth.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/repurpose",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "growth.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/repurpose/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "jobs.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/jobs",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "jobs.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/jobs/00000000-0000-4000-8000-0000000000aa",
+      "owner": 500,
+      "viewer": 500,
+      "note": "{\"error\":{\"code\":\"internal\",\"message\":\"Cannot coerce the result to a single JSON object\",\"request_id\":\"4777f65d-8437-44c5-9b39-234656b12588\"}}"
+    },
+    {
+      "file": "knowledge.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/sources",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "knowledge.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/sources/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "media.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/media/collections",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "media.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/media",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "media.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/media/00000000-0000-4000-8000-0000000000aa/url",
+      "owner": 500,
+      "viewer": 500,
+      "note": "{\"error\":{\"code\":\"internal\",\"message\":\"Cannot coerce the result to a single JSON object\",\"request_id\":\"887b8027-6757-438a-8e59-645a48d74637\"}}"
+    },
+    {
+      "file": "mobile.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/inbox",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "mobile.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/agenda?from=2026-11-01T00:00:00Z&to=2026-12-31T00:00:00Z",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "mobile.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/publishing/status",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "mobile.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/quick-create/options",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "mobile.ts",
+      "method": "GET",
+      "path": "/v1/me/notifications",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "mobile.ts",
+      "method": "GET",
+      "path": "/v1/me/push-key",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/publishing/connections",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/connected-accounts",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/connected-accounts/00000000-0000-4000-8000-0000000000aa/wordpress-terms",
+      "owner": 500,
+      "viewer": 500,
+      "note": "{\"error\":{\"code\":\"internal\",\"message\":\"Cannot coerce the result to a single JSON object\",\"request_id\":\"d8aa3761-e66c-4fd7-bf59-a729f15240c9\"}}"
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/content/<item>/publish-options",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/schedules",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/schedules/00000000-0000-4000-8000-0000000000aa/attempts",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/calendar?from=2026-11-01T00:00:00Z&to=2026-12-31T00:00:00Z",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "seo.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/seo/keyword-sets",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "seo.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/seo/keyword-sets/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "seo.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/seo/competitors",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "seo.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/content/<item>/seo",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "services.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/services/offerings",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "services.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/services",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "services.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/services/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "strategy.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/strategies",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "strategy.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/strategies/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "strategy.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/strategies/00000000-0000-4000-8000-0000000000aa/revisions",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "strategy.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/strategies/00000000-0000-4000-8000-0000000000aa/revisions/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "video.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/video-projects",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "video.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/video-projects/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/members",
+      "owner": 500,
+      "viewer": 500,
+      "note": "{\"error\":{\"code\":\"internal\",\"message\":\"Could not embed because more than one relationship was found for 'workspace_members' and 'users'\",\"request_id\":\"05ea9b78-4f26-423f-936f-ba0010c7f6c9\"}}"
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/api-keys",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/credits",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/credits/transactions",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/audit-logs",
+      "owner": 200,
+      "viewer": 403
+    }
+  ],
+  "writes_detail": [
+    {
+      "name": "campaign create",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "name": "campaign update",
+      "status": 422,
+      "ok": false,
+      "detail": {
+        "error": {
+          "code": "validation_failed",
+          "message": "Invalid request.",
+          "details": [
+            {
+              "path": "revision",
+              "message": "Invalid input: expected number, received undefined"
+            }
+          ],
+          "request_id": "c55125eb-3e06-40f9-9ff6-0406a012191a"
+        }
+      }
+    },
+    {
+      "name": "save human version",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "name": "banned word blocked by validation",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "name": "validator reports the banned word",
+      "status": 200,
+      "ok": true,
+      "detail": [
+        {
+          "code": "banned_word",
+          "blockId": "b1",
+          "message": "Avoid \"cheap\".",
+          "severity": "error"
+        }
+      ]
+    },
+    {
+      "name": "submit for approval",
+      "status": 422,
+      "ok": false,
+      "detail": {
+        "error": {
+          "code": "validation_failed",
+          "message": "fix the checklist errors before submitting",
+          "request_id": "8c702797-d60e-4c85-885c-bb73393b2991"
+        }
+      }
+    },
+    {
+      "name": "approval is listed",
+      "status": 404,
+      "ok": false,
+      "detail": null
+    },
+    {
+      "name": "changes requested needs a comment",
+      "status": 0,
+      "ok": false,
+      "detail": null
+    },
+    {
+      "name": "viewer can't create content",
+      "status": 403,
+      "ok": true
+    },
+    {
+      "name": "collection create",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "name": "api key create + list",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "name": "invite create",
+      "status": 402,
+      "ok": false,
+      "detail": {
+        "error": {
+          "code": "plan_limit",
+          "message": "Your plan allows 2 seats.",
+          "details": {
+            "limit": "max_seats",
+            "max": 2,
+            "current": 2
+          },
+          "request_id": "995463f4-d871-41f1-b294-e6d988bd5a54"
+        }
+      }
+    },
+    {
+      "name": "credits estimate",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "billing page data",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "ads accounts (read)",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "service offerings",
+      "status": 200,
+      "ok": true
+    }
+  ]
+}

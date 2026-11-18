@@ -46,6 +46,7 @@ export function fromDbError(e: { message?: string; code?: string } | null | unde
   if (e?.code === "23505") return new AppError("conflict", msg);
   if (e?.code === "23514") return new AppError("conflict", msg);
   if (e?.code === "23503" || e?.code === "P0002") return new AppError("not_found", msg);
+  if (e?.code === "PGRST116") return new AppError("not_found", "Not found.");   // .single() matched no row (or several): to a caller that is "not found"
   if (e?.code === "22023" || e?.code === "22P02") return new AppError("validation_failed", msg);
   return new AppError("internal", msg, { cause: e });
 }

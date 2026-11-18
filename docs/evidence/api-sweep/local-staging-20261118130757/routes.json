@@ -1,0 +1,703 @@
+{
+  "target": "local-staging",
+  "run": "20261118130757",
+  "reads": {
+    "total": 84,
+    "ownerOk": 58,
+    "serverErrors": 0
+  },
+  "writes": {
+    "total": 18,
+    "failed": 0
+  },
+  "routes": [
+    {
+      "file": "account.ts",
+      "method": "GET",
+      "path": "/v1/me",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "account.ts",
+      "method": "GET",
+      "path": "/v1/workspaces",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "ads.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/ads/accounts",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "ads.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/ads/accounts/00000000-0000-4000-8000-0000000000aa/search",
+      "owner": 409,
+      "viewer": 403
+    },
+    {
+      "file": "ads.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/ads/campaigns",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "ads.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/ads/campaigns/57ebec20-d423-4edb-b513-48d987022691",
+      "owner": 404,
+      "viewer": 403
+    },
+    {
+      "file": "ads.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/ads/requests",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "ads.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/ads/campaigns/57ebec20-d423-4edb-b513-48d987022691/report",
+      "owner": 404,
+      "viewer": 403
+    },
+    {
+      "file": "analytics.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/analytics/connections",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "analytics.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/analytics/sync-runs",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "analytics.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/analytics/overview",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "analytics.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/analytics/breakdown",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "analytics.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/insights",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "analytics.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/learning",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "billing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/billing",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "billing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/billing/usage",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "billing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/billing/portal",
+      "owner": 409,
+      "viewer": 403
+    },
+    {
+      "file": "billing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/service-ops",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "brand-kit.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/onboarding",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "brand-kit.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/kit",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "brand-kit.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/kit/versions",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "brand-kit.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/kit/versions/00000000-0000-4000-8000-0000000000aa",
+      "owner": 422,
+      "viewer": 422
+    },
+    {
+      "file": "brand-kit.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/kit/impact",
+      "owner": 422,
+      "viewer": 422
+    },
+    {
+      "file": "brand-kit.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/context",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "campaigns.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/campaigns",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "campaigns.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/campaigns/57ebec20-d423-4edb-b513-48d987022691",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "campaigns.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/plan",
+      "owner": 422,
+      "viewer": 422
+    },
+    {
+      "file": "campaigns.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/seasonal-events",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "content.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/content",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "content.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/content/<item>",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "content.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/content/<item>/versions",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "content.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/content/<item>/versions/00000000-0000-4000-8000-0000000000aa",
+      "owner": 422,
+      "viewer": 422
+    },
+    {
+      "file": "content.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/approvals",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "desk.ts",
+      "method": "GET",
+      "path": "/v1/desk/me",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "desk.ts",
+      "method": "GET",
+      "path": "/v1/desk/ops",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "desk.ts",
+      "method": "GET",
+      "path": "/v1/desk/requests",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "desk.ts",
+      "method": "GET",
+      "path": "/v1/desk/requests/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "desk.ts",
+      "method": "GET",
+      "path": "/v1/desk/staff",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "growth.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/projects",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "growth.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/projects/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "growth.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/repurpose/options",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "growth.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/repurpose",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "growth.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/repurpose/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "jobs.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/jobs",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "jobs.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/jobs/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "knowledge.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/sources",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "knowledge.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/sources/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "media.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/media/collections",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "media.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/media",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "media.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/media/00000000-0000-4000-8000-0000000000aa/url",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "mobile.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/inbox",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "mobile.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/agenda?from=2026-11-01T00:00:00Z&to=2026-12-31T00:00:00Z",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "mobile.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/publishing/status",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "mobile.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/quick-create/options",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "mobile.ts",
+      "method": "GET",
+      "path": "/v1/me/notifications",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "mobile.ts",
+      "method": "GET",
+      "path": "/v1/me/push-key",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/publishing/connections",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/connected-accounts",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/connected-accounts/00000000-0000-4000-8000-0000000000aa/wordpress-terms",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/content/<item>/publish-options",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/schedules",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/schedules/00000000-0000-4000-8000-0000000000aa/attempts",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "publishing.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/calendar?from=2026-11-01T00:00:00Z&to=2026-12-31T00:00:00Z",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "seo.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/seo/keyword-sets",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "seo.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/seo/keyword-sets/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "seo.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/seo/competitors",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "seo.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/content/<item>/seo",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "services.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/services/offerings",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "services.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/services",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "services.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/services/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "strategy.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/strategies",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "strategy.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/strategies/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "strategy.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/strategies/00000000-0000-4000-8000-0000000000aa/revisions",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "strategy.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/strategies/00000000-0000-4000-8000-0000000000aa/revisions/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "video.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/video-projects",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "video.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>/video-projects/00000000-0000-4000-8000-0000000000aa",
+      "owner": 404,
+      "viewer": 404
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/members",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/brands/<brand>",
+      "owner": 200,
+      "viewer": 200
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/api-keys",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/credits",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/credits/transactions",
+      "owner": 200,
+      "viewer": 403
+    },
+    {
+      "file": "workspace.ts",
+      "method": "GET",
+      "path": "/v1/workspaces/<ws>/audit-logs",
+      "owner": 200,
+      "viewer": 403
+    }
+  ],
+  "writes_detail": [
+    {
+      "name": "campaign create",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "name": "campaign update",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "save human version",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "name": "banned word blocked by validation",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "name": "validator reports the banned word",
+      "status": 200,
+      "ok": true,
+      "detail": [
+        {
+          "code": "banned_word",
+          "blockId": "b1",
+          "message": "Avoid \"cheap\".",
+          "severity": "error"
+        }
+      ]
+    },
+    {
+      "name": "submitting a draft with a banned word is refused by the validator",
+      "status": 422,
+      "ok": true
+    },
+    {
+      "name": "save a clean version",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "name": "submit a clean draft for approval",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "name": "approval is listed",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "changes requested needs a comment",
+      "status": 422,
+      "ok": true
+    },
+    {
+      "name": "viewer can't create content",
+      "status": 403,
+      "ok": true
+    },
+    {
+      "name": "collection create",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "name": "api key create + list",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "name": "invite beyond the plan's seats is refused (402)",
+      "status": 402,
+      "ok": true
+    },
+    {
+      "name": "credits estimate",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "billing page data",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "ads accounts (read)",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "service offerings",
+      "status": 200,
+      "ok": true
+    }
+  ]
+}

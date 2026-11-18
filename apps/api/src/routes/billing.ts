@@ -48,7 +48,7 @@ export const billingRoutes = (deps: ApiDeps) => {
   /** Lago customer = the workspace (external_id = workspace id), billed to the owner's email. */
   async function ensureCustomer(c: Context<AppEnv>) {
     const w = check(await svc().from("workspaces").select("id, name").eq("id", ws(c)).single()) as { id: string; name: string };
-    const owner = maybe(await svc().from("workspace_members").select("user:users(email)").eq("workspace_id", ws(c)).eq("role", "owner").limit(1).maybeSingle()) as { user: { email: string } | null } | null;
+    const owner = maybe(await svc().from("workspace_members").select("user:users!workspace_members_user_id_fkey(email)").eq("workspace_id", ws(c)).eq("role", "owner").limit(1).maybeSingle()) as { user: { email: string } | null } | null;
     await lago().upsertCustomer({ external_id: w.id, name: w.name, email: owner?.user?.email ?? null, currency: "INR", payment_provider: deps.lagoPaymentProvider ?? null, payment_provider_code: deps.lagoPaymentProviderCode ?? null });
   }
 

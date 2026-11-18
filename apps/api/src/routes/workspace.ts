@@ -64,7 +64,7 @@ export const workspaceRoutes = (deps: ApiDeps) => {
   r.get("/:workspaceId/members", can("member.read"), async (c) => {
     const rows = check(
       await c.get("db").from("workspace_members")
-        .select("user_id, role, status, brand_restricted, created_at, user:users(email, full_name, avatar_url)")
+        .select("user_id, role, status, brand_restricted, created_at, user:users!workspace_members_user_id_fkey(email, full_name, avatar_url)")
         .eq("workspace_id", c.get("workspaceId")).order("created_at"),
     );
     return c.json({ data: rows });

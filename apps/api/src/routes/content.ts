@@ -99,7 +99,7 @@ export const contentRoutes = (deps: ApiDeps) => {
   // ---- read -----------------------------------------------------------------
   r.get("/brands/:brandId/content", can("content.read"), async (c) => {
     const q = parse(ListSchema, c.req.query());
-    let query = c.get("db").from("content_items").select(`${ITEM_COLUMNS}, current:content_versions!content_items_current_version_id_fkey(version, validation_report)`)
+    let query = c.get("db").from("content_items").select(`${ITEM_COLUMNS}, current:content_versions!content_items_current_version_fk(version, validation_report)`)
       .eq("workspace_id", c.get("workspaceId")).eq("brand_id", brandId(c)).order("updated_at", { ascending: false }).limit(q.limit + 1);
     if (q.type) query = query.eq("type", q.type);
     if (q.status) query = query.eq("status", q.status);

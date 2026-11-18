@@ -219,7 +219,7 @@ export function createAnalyticsActivities(deps: AnalyticsDeps) {
         if (er == null || !base || base.posts < 3 || now().getTime() - Date.parse(f.publishedAt) < 72 * 3_600_000) continue;
         const score = base.median > 0 ? er / base.median - 1 : 0;
         const meta = await q<{ brand_id: string; current: { id: string; prompt_template: string | null; model: string | null; generation_job_id: string | null } | null }>(
-          db.from("content_items").select("brand_id, current:content_versions!content_items_current_version_id_fkey(id, prompt_template, model, generation_job_id)").eq("id", f.contentItemId).single());
+          db.from("content_items").select("brand_id, current:content_versions!content_items_current_version_fk(id, prompt_template, model, generation_job_id)").eq("id", f.contentItemId).single());
         const ins = await db.from("learning_signals").insert({ workspace_id: a.workspaceId, brand_id: meta.brand_id, content_item_id: f.contentItemId, content_version_id: meta.current?.id ?? null, schedule_id: f.scheduleId,
           signal: "engagement_outcome", value: Number(score.toFixed(4)), details: { er, channelMedian: base.median, channel: f.channel }, prompt_template: meta.current?.prompt_template ?? null, model: meta.current?.model ?? null });
         if (ins.error?.code === "23505") continue;
