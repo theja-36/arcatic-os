@@ -3,16 +3,15 @@ import { isRole } from "@arcatic/core";
 import { createUserClient, dbConfigFromEnv, getServiceClient } from "@arcatic/database";
 import { AdsSyncClient, LagoClient, embedderFromEnv, mailerFromEnv, pushFromEnv } from "@arcatic/integrations";
 import { JobStarter, connectTemporal, temporalConfigFromEnv } from "@arcatic/jobs";
-import { createRemoteJWKSet, jwtVerify, type JWTVerifyGetKey } from "jose";
+import { createJwtVerifier } from "./jwt.js";
 import type { ApiDeps } from "./types.js";
 
 export function realDeps(env: NodeJS.ProcessEnv = process.env): ApiDeps {
   const db = dbConfigFromEnv(env);
   const service = () => getServiceClient(db);
 
-  // Supabase projects sign with asymmetric keys (JWKS); legacy projects use the HS256 secret.
-  const secret = env.SUPABASE_JWT_SECRET ? new TextEncoder().encode(env.SUPABASE_JWT_SECRET) : undefined;
-  const jwks: JWTVerifyGetKey | undefined = secret ? undefined : createRemoteJWKSet(new URL(`${db.url}/auth/v1/.well-known/jwks.json`));
+  // Supabase Auth access tokens: asymmetric signing keys by default; HS256 only if SUPABASE_JWT_SECRET is set (legacy projects).
+  const verifyJwt = createJwtVerifier({ supabaseUrl: db.url, issuer: env.SUPABASE_JWT_ISSUER || undefined, hs256Secret: env.SUPABASE_JWT_SECRET || undefined });
 
   let starter: Promise<JobStarter> | undefined;
 
@@ -32,16 +31,7 @@ export function realDeps(env: NodeJS.ProcessEnv = process.env): ApiDeps {
     receiptSecret: env.PUSH_RECEIPT_SECRET || env.VAPID_PRIVATE_KEY || undefined,
     appUrl: env.APP_URL || (env.API_CORS_ORIGINS ?? "http://localhost:3000").split(",")[0]!.trim(),
     corsOrigins: (env.API_CORS_ORIGINS ?? "http://localhost:3000").split(",").map((s) => s.trim()),
-    async verifyJwt(token) {
-      try {
-        const { payload } = secret
-          ? await jwtVerify(token, secret, { audience: "authenticated" })
-          : await jwtVerify(token, jwks!, { audience: "authenticated" });
-        return typeof payload.sub === "string" ? { sub: payload.sub } : null;
-      } catch {
-        return null;
-      }
-    },
+    verifyJwt,
     async resolveApiKey(raw) {
       const hash = createHash("sha256").update(raw).digest("hex");
       const { data } = await service().from("api_keys").select("id, workspace_id, role, scopes, expires_at, revoked_at").eq("secret_hash", hash).maybeSingle();
