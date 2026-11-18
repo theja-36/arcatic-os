@@ -1,0 +1,23 @@
+# TLS terminator for staging. Caddy obtains and renews Let's Encrypt certificates automatically;
+# both hostnames must already point at this server (DNS A/AAAA) and ports 80/443 must be open.
+# Hostnames come from the environment: WEB_HOST=staging.example.com API_HOST=api-staging.example.com
+{$WEB_HOST} {
+	encode zstd gzip
+	reverse_proxy web:3000
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+}
+
+{$API_HOST} {
+	encode zstd gzip
+	reverse_proxy api:4000
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		-Server
+	}
+}

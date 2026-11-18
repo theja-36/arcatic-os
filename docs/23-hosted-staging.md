@@ -1,5 +1,7 @@
 # 23 — Hosted staging: deployment checklist, verification plan, Android checklist
 
+> **§1 (credentials list) and the hosting assumptions below are superseded by the internal staging plan (kept private)**, which has the full infrastructure inventory, sizing, costs, Supabase-key audit, migration procedure and the single ordered handoff. §2 onward (deployment order, scheduled-job verification, notification status, Android checklist, gates) still apply.
+
 Status of this document: **prepared, not executed.** Nothing here has been run against a hosted environment — no hosted Supabase project, hosting, Temporal or email provider exists yet. What *has* been run is the same flow on the local-staging stack (docs/21). Environment names only appear below; **never paste secret values into chat** — put them in the host's secret manager and tell me when they are set.
 
 Rules that apply to every step: no push, no deploy, no purchases, no email to real people and no production data without your explicit approval.

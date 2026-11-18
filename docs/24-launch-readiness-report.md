@@ -12,7 +12,7 @@ Not *hosted-staging verified*, not *launch ready*. Those need the items in [23-h
 | Scheduled-job behaviours: hold extension, lost-hold policy and re-hold on approval, overdue reminders, 3-day customer review reminders, idempotent re-runs | E2E C1–C7, D1–D5 (real DB); `jobs/test/services.test.ts` (in-process Temporal) |
 | API robustness | route sweep, 0 × 5xx: `docs/evidence/api-sweep/local-staging-20261118130757` (6 bugs found and fixed first) |
 | Data layer: RLS, ledger, state machines | `supabase/tests/smoke/10_rls_smoke.sql` §1–24 passed |
-| Automated suite | `pnpm test`: **497 passed, 1 skipped** (Docker FFmpeg test) |
+| Automated suite | `pnpm test`: **517 passed, 1 skipped** (Docker FFmpeg test) |
 | Every workspace/brand/settings page loads on real data, no error states | manual walkthrough this cycle; one layout bug found and fixed (§ below) |
 | Push: server accepted, payload decrypts, displayed once on desktop Chrome; SW click routing logic | `push-email.test.ts`, `real-push-chrome-desktop.json`, `web/test/sw-click.test.ts` (13) |
 

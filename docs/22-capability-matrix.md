@@ -14,7 +14,7 @@ Written 2026-11-18 at the end of the Phase 12 local-staging cycle.
 | **M** Missing | Not built. |
 | **B** Blocked | Cannot be verified or finished without credentials, a device, hosting, or an external approval. |
 
-**Test baseline (this cycle, `pnpm test`, all green):** database 4, web 13, ai 38, integrations 36, core 203, api 131, jobs 72 (+1 skipped Docker/FFmpeg test) = **497 passed, 1 skipped**. Typecheck/build were green at the last commit. DB behaviour: `supabase/tests/smoke/10_rls_smoke.sql` sections 1–24, last run "RLS SMOKE: ALL PASSED". Hosted Supabase, Temporal and every third-party SaaS have **not** been exercised.
+**Test baseline (this cycle, `pnpm test`, all green):** database 10, web 15, ai 38, integrations 37, core 203, api 142, jobs 72 (+1 skipped Docker/FFmpeg test) = **517 passed, 1 skipped**. Typecheck/build were green at the last commit. DB behaviour: `supabase/tests/smoke/10_rls_smoke.sql` sections 1–24, last run "RLS SMOKE: ALL PASSED". Hosted Supabase, Temporal and every third-party SaaS have **not** been exercised.
 
 What "real" means in this environment: local Supabase (Postgres, PostgREST, Auth, Storage) + Mailpit (SMTP sink) + the real API and web production build + real desktop Chrome. Temporal is **not** running locally; workflows are tested with Temporal's in-process `TestWorkflowEnvironment`. All AI, scraping, media, publishing, billing and ads services are faked in tests.
 

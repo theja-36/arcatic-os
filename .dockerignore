@@ -1,0 +1,14 @@
+**/node_modules
+**/.next
+**/dist
+**/.turbo
+.git
+.env
+.env.*
+!.env.example
+!.env.staging.example
+docs
+supabase/.temp
+supabase/.branches
+**/*.log
+**/tsconfig.tsbuildinfo

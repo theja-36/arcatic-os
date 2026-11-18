@@ -1,0 +1,78 @@
+# Hosted-staging stack for ONE Linux server: Caddy (HTTPS) + web + API + worker.
+# Managed elsewhere: Supabase (database/auth/storage), Temporal (Cloud by default), email provider, AI providers.
+# Not deployed from this file until the owner approves (docs/23-hosted-staging.md).
+#
+#   cp .env.staging /srv/arcatic/.env.staging           # on the server, mode 600
+#   docker compose -f infrastructure/docker-compose.staging.yml --env-file .env.staging build
+#   docker compose -f infrastructure/docker-compose.staging.yml --env-file .env.staging up -d
+#   # optional self-hosted Temporal instead of Temporal Cloud:  --profile temporal  (and TEMPORAL_ADDRESS=temporal:7233)
+name: arcatic-staging
+
+x-common: &common
+  restart: unless-stopped
+  networks: [edge]
+  logging: { driver: json-file, options: { max-size: "10m", max-file: "5" } }
+
+services:
+  caddy:
+    <<: *common
+    image: caddy:2.9
+    ports: ["80:80", "443:443"]
+    environment:
+      WEB_HOST: ${WEB_HOST:?set WEB_HOST, e.g. staging.example.com}
+      API_HOST: ${API_HOST:?set API_HOST, e.g. api-staging.example.com}
+    volumes: ["./Caddyfile:/etc/caddy/Caddyfile:ro", "caddy-data:/data", "caddy-config:/config"]
+    depends_on: [web, api]
+    mem_limit: 256m
+
+  # The web container holds NO secrets: NEXT_PUBLIC_* values are baked in at build time.
+  web:
+    <<: *common
+    build:
+      context: ..
+      dockerfile: infrastructure/web.Dockerfile
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:?}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:?}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?}
+        NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_CLIENT_ID:-}
+        NEXT_PUBLIC_GOOGLE_API_KEY: ${NEXT_PUBLIC_GOOGLE_API_KEY:-}
+        NEXT_PUBLIC_GOOGLE_APP_ID: ${NEXT_PUBLIC_GOOGLE_APP_ID:-}
+    mem_limit: 768m
+
+  api:
+    <<: *common
+    build: { context: .., dockerfile: infrastructure/api.Dockerfile }
+    env_file: [../.env.staging]
+    mem_limit: 768m
+
+  # One worker serves every queue in staging. It also runs ffmpeg renders, hence the larger limit.
+  worker:
+    <<: *common
+    build: { context: .., dockerfile: infrastructure/worker.Dockerfile }
+    env_file: [../.env.staging]
+    mem_limit: 3g
+    cpus: 2
+
+  # ---- optional: self-hosted Temporal (only if not using Temporal Cloud) ----
+  temporal-postgres:
+    <<: *common
+    profiles: [temporal]
+    image: postgres:16
+    environment: { POSTGRES_USER: temporal, POSTGRES_PASSWORD: "${TEMPORAL_DB_PASSWORD:?set TEMPORAL_DB_PASSWORD}" }
+    volumes: [temporal-pg:/var/lib/postgresql/data]
+    mem_limit: 512m
+  temporal:
+    <<: *common
+    profiles: [temporal]
+    image: temporalio/auto-setup:1.28.1
+    depends_on: [temporal-postgres]
+    environment: { DB: postgres12, DB_PORT: 5432, POSTGRES_USER: temporal, POSTGRES_PWD: "${TEMPORAL_DB_PASSWORD}", POSTGRES_SEEDS: temporal-postgres }
+    mem_limit: 1g          # no published port: reachable only from the api/worker on the private network
+
+networks:
+  edge: {}
+volumes:
+  caddy-data: {}
+  caddy-config: {}
+  temporal-pg: {}
