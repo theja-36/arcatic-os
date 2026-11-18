@@ -27,10 +27,28 @@ if (env.STAGING_TARGET !== "staging") { console.error("Set STAGING_TARGET=stagin
 const urlOf = (k: string) => { try { return new URL(env[k] ?? ""); } catch { return null; } };
 
 // ---------------------------------------------------------------- 1. configuration
-const required = ["SUPABASE_URL", "SUPABASE_ANON_KEY", "SUPABASE_SERVICE_ROLE_KEY", "NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY", "APP_URL", "NEXT_PUBLIC_API_URL", "API_PUBLIC_URL", "API_CORS_ORIGINS",
+const PUB = env.SUPABASE_PUBLISHABLE_KEY || env.SUPABASE_ANON_KEY || "", SEC = env.SUPABASE_SECRET_KEY || env.SUPABASE_SERVICE_ROLE_KEY || "";
+const WEBPUB = env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+add("config", "SUPABASE public key (SUPABASE_PUBLISHABLE_KEY | SUPABASE_ANON_KEY)", PUB ? "PASS" : "FAIL", PUB ? "set (value hidden)" : "missing");
+add("config", "SUPABASE privileged key (SUPABASE_SECRET_KEY | SUPABASE_SERVICE_ROLE_KEY)", SEC ? "PASS" : "FAIL", SEC ? "set (value hidden)" : "missing");
+add("config", "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY | NEXT_PUBLIC_SUPABASE_ANON_KEY", WEBPUB ? "PASS" : "FAIL", WEBPUB ? "set (value hidden)" : "missing");
+const kindOf = (k: string) => (k.startsWith("sb_publishable_") ? "publishable" : k.startsWith("sb_secret_") ? "secret" : k.split(".").length === 3 ? "legacy-jwt" : "unknown");
+const roleOf = (k: string) => { try { return (JSON.parse(Buffer.from(k.split(".")[1]!, "base64url").toString()) as { role?: string }).role; } catch { return undefined; } };
+if (PUB && SEC) {
+  add("supabase-keys", "public key is a public key", kindOf(PUB) === "publishable" || (kindOf(PUB) === "legacy-jwt" && roleOf(PUB) === "anon") ? "PASS" : "FAIL", `format=${kindOf(PUB)}`);
+  add("supabase-keys", "privileged key is a privileged key", kindOf(SEC) === "secret" || (kindOf(SEC) === "legacy-jwt" && roleOf(SEC) === "service_role") ? "PASS" : "FAIL", `format=${kindOf(SEC)}`);
+  if (kindOf(PUB) === "legacy-jwt" || kindOf(SEC) === "legacy-jwt") add("supabase-keys", "new-style API keys in use", "WARN", "legacy anon/service_role keys work today but Supabase is retiring them (end of 2026): move to sb_publishable_/sb_secret_");
+  if (kindOf(SEC) === "secret" && env.SUPABASE_SERVICE_ROLE_KEY) add("supabase-keys", "no leftover legacy privileged key", "WARN", "SUPABASE_SERVICE_ROLE_KEY is still set; remove it and disable legacy keys in the dashboard once the new keys work");
+}
+// the privileged key must never be reachable from the browser bundle
+const leaked = Object.entries(env).filter(([k, v]) => k.startsWith("NEXT_PUBLIC_") && v && (v === SEC || v === env.SUPABASE_SERVICE_ROLE_KEY || v === env.SUPABASE_SECRET_KEY || v.startsWith("sb_secret_") || roleOf(v) === "service_role")).map(([k]) => k);
+add("supabase-keys", "no NEXT_PUBLIC_ variable holds a privileged key", leaked.length ? "FAIL" : "PASS", leaked.length ? leaked.join(", ") : undefined);
+if (WEBPUB && PUB) add("supabase-keys", "browser and server public keys match", WEBPUB === PUB ? "PASS" : "WARN", "differ — fine only if both are valid public keys of the same project");
+const required = ["SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_URL", "APP_URL", "NEXT_PUBLIC_API_URL", "API_PUBLIC_URL", "API_CORS_ORIGINS",
   "TEMPORAL_ADDRESS", "TEMPORAL_NAMESPACE", "ENCRYPTION_KEY", "ADMIN_API_TOKEN", "VAPID_PUBLIC_KEY", "VAPID_PRIVATE_KEY", "VAPID_SUBJECT", "SMTP_HOST", "SMTP_PORT", "EMAIL_FROM", "EMAIL_MODE", "EMAIL_ALLOWLIST"];
 for (const k of required) add("config", k, has(k) ? "PASS" : "FAIL", has(k) ? (secretish.test(k) ? "set (value hidden)" : undefined) : "missing");
-if (!has("SUPABASE_JWT_SECRET")) add("config", "SUPABASE_JWT_SECRET", "WARN", "unset → API verifies tokens via the project's JWKS endpoint (fine for asymmetric-key projects)");
+if (!has("SUPABASE_JWT_SECRET")) add("config", "JWT verification mode", "PASS", "asymmetric: API verifies tokens against the project's JWKS (ES256/RS256/EdDSA only)");
+else add("config", "JWT verification mode", "WARN", "legacy HS256 shared secret in use — migrate the project to JWT signing keys and unset SUPABASE_JWT_SECRET");
 if (!has("TEMPORAL_API_KEY") && /tmprl\.cloud/.test(env.TEMPORAL_ADDRESS ?? "")) add("config", "TEMPORAL_API_KEY", "FAIL", "Temporal Cloud needs an API key");
 
 for (const k of ["SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_URL", "APP_URL", "NEXT_PUBLIC_API_URL", "API_PUBLIC_URL"]) {
@@ -43,8 +61,8 @@ for (const k of ["SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_URL", "APP_URL", "NEXT_PU
 if (env.SUPABASE_URL && env.NEXT_PUBLIC_SUPABASE_URL && env.SUPABASE_URL !== env.NEXT_PUBLIC_SUPABASE_URL) add("safety", "Supabase URLs agree", "FAIL", "SUPABASE_URL ≠ NEXT_PUBLIC_SUPABASE_URL");
 add("safety", "EMAIL_MODE is not 'all'", env.EMAIL_MODE === "all" ? "FAIL" : ["allowlist", "off"].includes(env.EMAIL_MODE ?? "") ? "PASS" : "FAIL", `EMAIL_MODE=${env.EMAIL_MODE ?? "(unset)"}`);
 const allow = (env.EMAIL_ALLOWLIST ?? "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
-const publicMail = allow.filter((d) => /^(gmail|googlemail|outlook|hotmail|live|yahoo|icloud|proton|protonmail|aol)\./.test(d) || /^(gmail|yahoo|outlook)\.com$/.test(d));
-add("safety", "EMAIL_ALLOWLIST holds test domains only", allow.length === 0 ? "FAIL" : publicMail.length ? "FAIL" : "PASS", publicMail.length ? `contains public mailbox domain(s): ${publicMail.join(", ")}` : `${allow.length} domain(s)`);
+const publicMail = allow.filter((d) => !d.includes("@")).filter((d) => /^(gmail|googlemail|outlook|hotmail|live|yahoo|icloud|proton|protonmail|aol)\./.test(d) || /^(gmail|yahoo|outlook)\.com$/.test(d));
+add("safety", "EMAIL_ALLOWLIST: test domains or exact addresses only", allow.length === 0 ? "FAIL" : publicMail.length ? "FAIL" : "PASS", publicMail.length ? `contains whole public mailbox domain(s): ${publicMail.join(", ")} — list exact addresses instead` : `${allow.length} entr${allow.length === 1 ? "y" : "ies"} (${allow.filter((d) => d.includes("@")).length} exact address)`);
 const cors = (env.API_CORS_ORIGINS ?? "").split(",").map((s) => s.trim()).filter(Boolean);
 add("safety", "API_CORS_ORIGINS exact, no wildcard", cors.length && !cors.some((o) => o === "*" || o.includes("*")) ? "PASS" : "FAIL", `${cors.length} origin(s)`);
 if (env.APP_URL && cors.length) add("safety", "APP_URL is an allowed CORS origin", urlOf("APP_URL") && cors.includes(urlOf("APP_URL")!.origin) ? "PASS" : "FAIL");
@@ -58,10 +76,19 @@ add("config", "VAPID_SUBJECT shape", /^(mailto:|https:\/\/)/.test(env.VAPID_SUBJ
 async function probe() {
   const to = async (label: string, f: () => Promise<void>, area: string) => { try { await f(); } catch (e) { add(area, label, "FAIL", String((e as Error).message).replace(/(eyJ[\w-]+\.[\w-]+\.[\w-]+)/g, "<jwt>").slice(0, 160)); } };
   const fetchT = (u: string, init: RequestInit = {}) => fetch(u, { ...init, signal: AbortSignal.timeout(15_000), redirect: "manual" });
-  const sb = env.SUPABASE_URL!, svc = env.SUPABASE_SERVICE_ROLE_KEY!, anon = env.SUPABASE_ANON_KEY!;
-  const sbH = { apikey: svc, authorization: `Bearer ${svc}` };
+  const sb = env.SUPABASE_URL!, svc = SEC, anon = PUB;
+  const keyH = (k: string): Record<string, string> => (k.startsWith("sb_") ? { apikey: k } : { apikey: k, authorization: `Bearer ${k}` });   // sb_ keys are not JWTs: apikey header only
+  const sbH = keyH(svc);
 
-  await to("Auth reachable", async () => { const r = await fetchT(`${sb}/auth/v1/health`, { headers: { apikey: anon } }); add("supabase", "Auth reachable", r.ok ? "PASS" : "FAIL", `HTTP ${r.status}`); }, "supabase");
+  await to("Auth reachable", async () => { const r = await fetchT(`${sb}/auth/v1/health`, { headers: keyH(anon) }); add("supabase", "Auth reachable", r.ok ? "PASS" : "FAIL", `HTTP ${r.status}`); }, "supabase");
+  await to("JWKS", async () => {
+    const r = await fetchT(`${sb}/auth/v1/.well-known/jwks.json`);
+    const j = (await r.json().catch(() => ({ keys: [] }))) as { keys?: Array<{ alg?: string }> };
+    const algs = (j.keys ?? []).map((k) => k.alg ?? "?");
+    const asym = algs.some((a) => ["ES256", "RS256", "EdDSA"].includes(a));
+    if (has("SUPABASE_JWT_SECRET")) add("auth", "JWKS (not used: HS256 mode)", "SKIP", `keys: ${algs.join(",") || "none"}`);
+    else add("auth", "JWKS has an asymmetric signing key (otherwise every API call would be refused)", asym ? "PASS" : "FAIL", asym ? `keys: ${algs.join(",")}` : "none — enable JWT signing keys in the dashboard (Auth → JWT Signing Keys)");
+  }, "auth");
   // migrations: probe one object introduced by each recent migration (0017 tables, 0018 view, 0019 column)
   for (const [path, label] of [["service_offerings?select=key&limit=1", "0017 service_offerings"], ["service_ops?select=id&limit=1", "0018 service_ops view"], ["notifications?select=receipts&limit=1", "0019 notifications.receipts"], ["plans?select=key&limit=1", "0004 plans seeded"]] as const) {
     await to(label, async () => { const r = await fetchT(`${sb}/rest/v1/${path}`, { headers: sbH }); add("migrations", label, r.ok ? "PASS" : "FAIL", r.ok ? undefined : `HTTP ${r.status} — apply migrations`); }, "migrations");
@@ -72,7 +99,7 @@ async function probe() {
     const j = (await r.json()) as Array<{ id: string; public: boolean }>;
     for (const b of ["media", "service-files"]) { const f = Array.isArray(j) ? j.find((x) => x.id === b) : undefined; add("storage", `bucket ${b} exists and is private`, f && !f.public ? "PASS" : "FAIL", !f ? "missing" : f.public ? "PUBLIC — must be private" : undefined); }
   }, "storage");
-  await to("anon cannot read private tables", async () => { const r = await fetchT(`${sb}/rest/v1/service_requests?select=id&limit=1`, { headers: { apikey: anon, authorization: `Bearer ${anon}` } }); const j = await r.json().catch(() => null); add("security", "anonymous read of service_requests returns nothing", r.ok && Array.isArray(j) && j.length === 0 || r.status === 401 || r.status === 403 ? "PASS" : "FAIL", `HTTP ${r.status}`); }, "security");
+  await to("anon cannot read private tables", async () => { const r = await fetchT(`${sb}/rest/v1/service_requests?select=id&limit=1`, { headers: keyH(anon) }); const j = await r.json().catch(() => null); add("security", "anonymous read of service_requests returns nothing", r.ok && Array.isArray(j) && j.length === 0 || r.status === 401 || r.status === 403 ? "PASS" : "FAIL", `HTTP ${r.status}`); }, "security");
 
   const api = env.API_PUBLIC_URL!, app = env.APP_URL!;
   await to("API /health", async () => { const r = await fetchT(`${api}/health`); add("api", "GET /health", r.ok ? "PASS" : "FAIL", `HTTP ${r.status}`); }, "api");

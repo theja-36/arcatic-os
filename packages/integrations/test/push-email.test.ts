@@ -67,6 +67,13 @@ describe("Mailer staging guard", () => {
     expect(make("off").allowed("owner@example.test")).toBe(false);
     expect(await make("allowlist").send({ to: "someone@gmail.com", subject: "s", text: "t" })).toEqual({ sent: false, reason: "recipient not on the staging allowlist" });
   });
+  it("an exact address in the allowlist admits only that address, not its whole domain", () => {
+    const m = new Mailer({ host: "127.0.0.1", port: 1, from: "a@example.test", mode: "allowlist", allowlist: ["tester+arcatic@gmail.com", "example.test"] });
+    expect(m.allowed("Tester+Arcatic@Gmail.com")).toBe(true);
+    expect(m.allowed("someone.else@gmail.com")).toBe(false);
+    expect(m.allowed("tester+arcatic@gmail.com.evil.com")).toBe(false);
+    expect(m.allowed("x@example.test")).toBe(true);
+  });
   it("defaults to the allowlist with example.test", () => {
     const m = mailerFromEnv({ SMTP_HOST: "127.0.0.1", SMTP_PORT: "54325" })!;
     expect(m.allowed("a@example.test")).toBe(true);

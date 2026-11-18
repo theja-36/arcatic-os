@@ -22,10 +22,12 @@ import { createNotifier } from "../../packages/jobs/src/notifier.ts";
 import { getServiceClient } from "../../packages/database/src/index.ts";
 
 const env = process.env;
+/** New-format sb_ keys are not JWTs: apikey header only, never Authorization: Bearer. */
+const bearer = (k: string): Record<string, string> => (k.startsWith("sb_") ? {} : { authorization: `Bearer ${k}` });
 const TARGET = env.E2E_TARGET;
 if (TARGET !== "local-staging" && TARGET !== "staging") throw new Error("Set E2E_TARGET=local-staging or staging. Refusing to run against an unmarked environment.");
 if (/prod/i.test(env.SUPABASE_URL ?? "") || /prod/i.test(env.NEXT_PUBLIC_API_URL ?? "")) throw new Error("Refusing: this looks like production.");
-const SB = env.SUPABASE_URL!, ANON = env.SUPABASE_ANON_KEY!, SERVICE = env.SUPABASE_SERVICE_ROLE_KEY!, API = env.NEXT_PUBLIC_API_URL!, ADMIN = env.ADMIN_API_TOKEN!;
+const SB = env.SUPABASE_URL!, ANON = (env.SUPABASE_PUBLISHABLE_KEY ?? env.SUPABASE_ANON_KEY)!, SERVICE = (env.SUPABASE_SECRET_KEY ?? env.SUPABASE_SERVICE_ROLE_KEY)!, API = env.NEXT_PUBLIC_API_URL!, ADMIN = env.ADMIN_API_TOKEN!;
 const RUN = new Date().toISOString().replace(/[-:T.Z]/g, "").slice(0, 14);
 const here = dirname(fileURLToPath(import.meta.url));
 const OUT = join(here, "../../docs/evidence/phase12", `${TARGET}-${RUN}`);
@@ -57,14 +59,14 @@ async function call(token: string | null, method: string, path: string, body?: u
 }
 const admin = (method: string, path: string, body?: unknown) => call(ADMIN, method, path, body);
 async function rest(token: string, path: string, init: RequestInit = {}) {
-  const res = await fetch(`${SB}/rest/v1/${path}`, { ...init, headers: { apikey: token === SERVICE ? SERVICE : ANON, authorization: `Bearer ${token}`, "content-type": "application/json", prefer: "return=representation", ...(init.headers as object) } });
+  const res = await fetch(`${SB}/rest/v1/${path}`, { ...init, headers: { apikey: token === SERVICE ? SERVICE : ANON, ...bearer(token), "content-type": "application/json", prefer: "return=representation", ...(init.headers as object) } });
   const text = await res.text();
   return { status: res.status, body: text ? JSON.parse(text) : null };
 }
 const svcGet = async (path: string) => (await rest(SERVICE, path)).body;
 async function newUser(label: string, email: string) {
   const password = randomBytes(18).toString("base64url");
-  const c = await fetch(`${SB}/auth/v1/admin/users`, { method: "POST", headers: { apikey: SERVICE, authorization: `Bearer ${SERVICE}`, "content-type": "application/json" }, body: JSON.stringify({ email, password, email_confirm: true, user_metadata: { full_name: label } }) });
+  const c = await fetch(`${SB}/auth/v1/admin/users`, { method: "POST", headers: { apikey: SERVICE, ...bearer(SERVICE), "content-type": "application/json" }, body: JSON.stringify({ email, password, email_confirm: true, user_metadata: { full_name: label } }) });
   const created = await c.json();
   if (!c.ok) throw new Error(`create ${label}: ${JSON.stringify(created)}`);
   const s = await fetch(`${SB}/auth/v1/token?grant_type=password`, { method: "POST", headers: { apikey: ANON, "content-type": "application/json" }, body: JSON.stringify({ email, password }) });
@@ -295,7 +297,7 @@ async function main() {
   const newVer = (await svcGet(`content_versions?id=eq.${itemAfter.current_version_id}&select=version,origin,transform,body,base_version`))[0];
   check("A39 approved text is a new version of the original draft (v2, human, transform=service)", newVer.version === 2 && newVer.origin === "human" && newVer.transform === "service" && canon(newVer.body.doc) === canon(finalDoc), { version: newVer.version, origin: newVer.origin, transform: newVer.transform });
   const assets = await svcGet(`media_assets?workspace_id=eq.${ws}&source=eq.service&select=id,storage_path,status,mime_type,title`);
-  const assetObj = assets[0] ? await fetch(`${SB}/storage/v1/object/authenticated/media/${assets[0].storage_path}`, { headers: { apikey: SERVICE, authorization: `Bearer ${SERVICE}` } }) : null;
+  const assetObj = assets[0] ? await fetch(`${SB}/storage/v1/object/authenticated/media/${assets[0].storage_path}`, { headers: { apikey: SERVICE, ...bearer(SERVICE) } }) : null;
   check("A40 approved file is in the media library (source=service) and stored in the media bucket", assets.length === 1 && assets[0].status === "ready" && !!assetObj?.ok && Buffer.from(await assetObj!.arrayBuffer()).equals(PNG), assets);
   const settled = await holds([rA2.reservation_id, ...rA2.extra_reservation_ids]);
   check("A41 both holds settled (25 + 5)", settled.every((h: { status: string }) => h.status === "settled") && settled.reduce((t: number, h: { settled_amount: number }) => t + Number(h.settled_amount), 0) === 30, settled);

@@ -21,7 +21,7 @@ const label = process.argv[4] ?? "Push test from Arcatic";
 if (!email?.endsWith("@example.test")) throw new Error("Pass a test address ending in @example.test.");
 
 async function main() {
-  const db = getServiceClient({ url: env.SUPABASE_URL!, anonKey: env.SUPABASE_ANON_KEY!, serviceRoleKey: env.SUPABASE_SERVICE_ROLE_KEY! });
+  const db = getServiceClient({ url: env.SUPABASE_URL!, anonKey: (env.SUPABASE_PUBLISHABLE_KEY ?? env.SUPABASE_ANON_KEY)!, serviceRoleKey: (env.SUPABASE_SECRET_KEY ?? env.SUPABASE_SERVICE_ROLE_KEY)! });
   const push = pushFromEnv();
   if (!push) throw new Error("VAPID keys are not configured.");
   const u = await db.from("users").select("id").eq("email", email).single();

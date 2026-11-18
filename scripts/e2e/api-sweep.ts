@@ -15,10 +15,12 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const env = process.env;
+/** New-format sb_ keys are not JWTs: apikey header only, never Authorization: Bearer. */
+const bearer = (k: string): Record<string, string> => (k.startsWith("sb_") ? {} : { authorization: `Bearer ${k}` });
 const TARGET = env.E2E_TARGET;
 if (TARGET !== "local-staging" && TARGET !== "staging") throw new Error("Set E2E_TARGET=local-staging or staging.");
 if (/prod/i.test(env.SUPABASE_URL ?? "") || /prod/i.test(env.NEXT_PUBLIC_API_URL ?? "")) throw new Error("Refusing: looks like production.");
-const SB = env.SUPABASE_URL!, ANON = env.SUPABASE_ANON_KEY!, SERVICE = env.SUPABASE_SERVICE_ROLE_KEY!, API = env.NEXT_PUBLIC_API_URL!, ADMIN = env.ADMIN_API_TOKEN!;
+const SB = env.SUPABASE_URL!, ANON = (env.SUPABASE_PUBLISHABLE_KEY ?? env.SUPABASE_ANON_KEY)!, SERVICE = (env.SUPABASE_SECRET_KEY ?? env.SUPABASE_SERVICE_ROLE_KEY)!, API = env.NEXT_PUBLIC_API_URL!, ADMIN = env.ADMIN_API_TOKEN!;
 const RUN = new Date().toISOString().replace(/[-:T.Z]/g, "").slice(0, 14);
 const here = dirname(fileURLToPath(import.meta.url));
 const ROUTES_DIR = join(here, "../../apps/api/src/routes");
@@ -34,7 +36,7 @@ async function call(token: string | null, method: string, path: string, body?: u
 }
 async function newUser(label: string, email: string) {
   const password = randomBytes(18).toString("base64url");
-  const c = await fetch(`${SB}/auth/v1/admin/users`, { method: "POST", headers: { apikey: SERVICE, authorization: `Bearer ${SERVICE}`, "content-type": "application/json" }, body: JSON.stringify({ email, password, email_confirm: true, user_metadata: { full_name: label } }) });
+  const c = await fetch(`${SB}/auth/v1/admin/users`, { method: "POST", headers: { apikey: SERVICE, ...bearer(SERVICE), "content-type": "application/json" }, body: JSON.stringify({ email, password, email_confirm: true, user_metadata: { full_name: label } }) });
   const created = await c.json();
   const s = await fetch(`${SB}/auth/v1/token?grant_type=password`, { method: "POST", headers: { apikey: ANON, "content-type": "application/json" }, body: JSON.stringify({ email, password }) });
   const sess = await s.json();
@@ -42,7 +44,7 @@ async function newUser(label: string, email: string) {
   return { id: created.id as string, token: sess.access_token as string };
 }
 const svc = async (path: string, init: RequestInit = {}) => {
-  const r = await fetch(`${SB}/rest/v1/${path}`, { ...init, headers: { apikey: SERVICE, authorization: `Bearer ${SERVICE}`, "content-type": "application/json", prefer: "return=representation" } });
+  const r = await fetch(`${SB}/rest/v1/${path}`, { ...init, headers: { apikey: SERVICE, ...bearer(SERVICE), "content-type": "application/json", prefer: "return=representation" } });
   const t = await r.text();
   return { status: r.status, body: t ? JSON.parse(t) : null };
 };

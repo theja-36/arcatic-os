@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
  * Transactional email over SMTP (staging: the local / staging mail catcher; production: the
  * provider's SMTP relay). Guarded so a non-production environment can never email a real person:
  *   EMAIL_MODE=off        → nothing is sent
- *   EMAIL_MODE=allowlist  → only addresses whose domain is in EMAIL_ALLOWLIST (default: example.test)
+ *   EMAIL_MODE=allowlist  → only addresses in EMAIL_ALLOWLIST: a domain (default: example.test) or one exact address
  *   EMAIL_MODE=all        → everyone (production only, set deliberately)
  */
 export interface Mail { to: string; subject: string; text: string; html?: string }
@@ -18,8 +18,10 @@ export class Mailer {
   allowed(to: string): boolean {
     if (this.opts.mode === "off") return false;
     if (this.opts.mode === "all") return true;
-    const domain = to.split("@")[1]?.toLowerCase() ?? "";
-    return this.opts.allowlist.some((d) => domain === d || domain.endsWith(`.${d}`));
+    const addr = to.trim().toLowerCase();
+    const domain = addr.split("@")[1] ?? "";
+    // an entry with "@" is one exact address (a tester's real inbox); otherwise it is a domain (and its subdomains)
+    return this.opts.allowlist.some((d) => (d.includes("@") ? addr === d : domain === d || domain.endsWith(`.${d}`)));
   }
   async send(m: Mail): Promise<MailResult> {
     if (!this.allowed(m.to)) return { sent: false, reason: this.opts.mode === "off" ? "email disabled" : "recipient not on the staging allowlist" };

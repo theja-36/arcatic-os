@@ -19,7 +19,9 @@
     "lago:setup": "tsx scripts/lago-setup.ts",
     "staging:preflight": "tsx scripts/staging/preflight.ts",
     "staging:smtp": "tsx scripts/staging/smtp-check.ts",
-    "staging:init": "tsx scripts/staging/init-env.ts"
+    "staging:init": "tsx scripts/staging/init-env.ts",
+    "staging:keys": "tsx scripts/staging/supabase-keys-check.ts",
+    "staging:auth": "tsx scripts/staging/auth-config-check.ts"
   },
   "devDependencies": {
     "turbo": "^2.3.3",
