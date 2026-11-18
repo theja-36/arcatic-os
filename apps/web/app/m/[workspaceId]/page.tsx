@@ -26,6 +26,24 @@ const dayLabel = (iso: string) => new Date(iso).toLocaleDateString(undefined, { 
 const time = (iso: string) => new Date(iso).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
 const statusTone = (s: string) => (s === "published" ? "success" : s === "failed" || s === "missed" ? "danger" : s === "publishing" ? "warning" : "neutral");
 
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/** Where a tapped push notification about a service request lands: a highlighted card above the Inbox. */
+function ServiceUpdate({ ws }: { ws: string }) {
+  const p = useSearchParams();
+  const id = p.get("service"), brand = p.get("brand");
+  const req = useApi<{ title: string; stage: string }>(id && brand && UUID.test(id) && UUID.test(brand) ? `/workspaces/${ws}/brands/${brand}/services/${id}` : null);
+  if (!req.data) return null;
+  return (
+    <Card role="status" className="m-4 mb-0 flex flex-col gap-1 border-[var(--accent)] p-4" data-testid="service-update">
+      <p className="text-xs text-[var(--text-muted)]">Service request</p>
+      <p className="font-medium">{req.data.title}</p>
+      <p className="text-sm text-[var(--text-muted)]">{req.data.stage}</p>
+      <Link href={`/w/${ws}/b/${brand}/services/${id}`}><Button className="mt-1 h-11 w-full">Open request</Button></Link>
+    </Card>
+  );
+}
+
 function Inbox({ ws }: { ws: string }) {
   const { data, reload } = useApi<{ data: InboxItem[]; counts: Record<string, number> }>(`/workspaces/${ws}/inbox`);
   const [comment, setComment] = useState<Record<string, string>>({});
@@ -205,6 +223,15 @@ function Hub() {
   const inbox = useApi<{ counts: Record<string, number> }>(`/workspaces/${ws}/inbox`);
   const pending = inbox.data ? Object.values(inbox.data.counts).reduce((a, b) => a + b, 0) : 0;
   useEffect(() => { try { localStorage.setItem("arcatic:lastWorkspace", ws); } catch { /* private mode */ } }, [ws]);
+  // the service worker asks an open window to move when it can't navigate it directly (see public/sw.js)
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      const d = e.data as { type?: string; url?: string } | null;
+      if (d?.type === "arcatic:navigate" && typeof d.url === "string" && d.url.startsWith("/") && !d.url.startsWith("//")) router.push(d.url);
+    };
+    navigator.serviceWorker?.addEventListener("message", onMsg);
+    return () => navigator.serviceWorker?.removeEventListener("message", onMsg);
+  }, [router]);
   return (
     <div className="flex min-h-dvh flex-col bg-[var(--bg)]">
       <header className="sticky top-0 z-30 flex items-center gap-2 border-b border-[var(--border)] bg-[var(--surface)] px-4 pb-2 pt-[max(0.5rem,env(safe-area-inset-top))]">
@@ -214,7 +241,7 @@ function Hub() {
         <Link href={`/w/${ws}`} className="text-xs text-[var(--accent)]">Full app</Link>
       </header>
       <main className="flex-1 pb-24">
-        {tab === "inbox" && <Inbox ws={ws} />}
+        {tab === "inbox" && <><ServiceUpdate ws={ws} /><Inbox ws={ws} /></>}
         {tab === "create" && <QuickCreate ws={ws} />}
         {tab === "calendar" && <Agenda ws={ws} />}
         {tab === "media" && <Media ws={ws} />}

@@ -6,7 +6,13 @@ import webpush from "web-push";
  * `npx web-push generate-vapid-keys`. FCM / APNs for a native app would be a second sender.
  */
 export interface PushSubscriptionRow { endpoint: string; keys: { p256dh?: string; auth?: string } }
-export interface PushPayload { title: string; body?: string; link?: string; tag?: string }
+/**
+ * `tag` must be unique per notification: browsers REPLACE a visible notification that has the same
+ * tag, and without `renotify` they do so silently (no banner, no sound). A tag per notification kind
+ * made later notifications of the same kind invisible while an earlier one was still unread.
+ * `receipt` + `receiptUrl` let the service worker report back that it displayed / was clicked.
+ */
+export interface PushPayload { title: string; body?: string; link?: string; tag?: string; id?: string; receipt?: string; receiptUrl?: string }
 export type PushResult = { ok: true; status: number } | { ok: false; status: number | null; expired: boolean; message: string };
 
 export class WebPushSender {

@@ -1,5 +1,5 @@
 import type { NoticeContent } from "@arcatic/core";
-import type { Db } from "@arcatic/database";
+import { signReceipt, type Db } from "@arcatic/database";
 import type { Mailer, WebPushSender } from "@arcatic/integrations";
 
 /**
@@ -11,7 +11,7 @@ import type { Mailer, WebPushSender } from "@arcatic/integrations";
 export interface Recipient { userId: string; audience: "customer" | "staff"; workspaceId?: string | null }
 export interface DeliveryReport { notificationId: string; userId: string; push: Array<{ status: number | null; ok: boolean; expired?: boolean }>; email: { sent: boolean; reason?: string } | null }
 
-export function createNotifier(deps: { db: Db; push?: WebPushSender | null; mailer?: Mailer | null; appUrl?: string; log?: (m: string, d?: unknown) => void }) {
+export function createNotifier(deps: { db: Db; push?: WebPushSender | null; mailer?: Mailer | null; appUrl?: string; receiptSecret?: string; receiptUrl?: string; log?: (m: string, d?: unknown) => void }) {
   const { db } = deps;
   const log = deps.log ?? ((m, d) => console.warn(JSON.stringify({ level: "warn", msg: m, ...(d as object) })));
 
@@ -20,7 +20,7 @@ export function createNotifier(deps: { db: Db; push?: WebPushSender | null; mail
     if (deps.push) {
       const devs = await db.from("user_devices").select("id, endpoint, keys").eq("user_id", userId).eq("kind", "webpush");
       for (const d of (devs.data ?? []) as Array<{ id: string; endpoint: string; keys: { p256dh?: string; auth?: string } }>) {
-        const r = await deps.push.send({ endpoint: d.endpoint, keys: d.keys }, { title: n.title, body: n.body, link: n.link, tag: n.kind });
+        const r = await deps.push.send({ endpoint: d.endpoint, keys: d.keys }, { title: n.title, body: n.body, link: n.pushLink, tag: `n-${id}`, id, ...(deps.receiptSecret && deps.receiptUrl && { receipt: signReceipt(deps.receiptSecret, id), receiptUrl: deps.receiptUrl }) });
         report.push.push(r.ok ? { status: r.status, ok: true } : { status: r.status, ok: false, expired: r.expired });
         if (!r.ok && r.expired) await db.from("user_devices").delete().eq("id", d.id);
         else if (r.ok) await db.from("user_devices").update({ last_seen_at: new Date().toISOString() }).eq("id", d.id);

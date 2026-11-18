@@ -28,6 +28,8 @@ export function realDeps(env: NodeJS.ProcessEnv = process.env): ApiDeps {
     ads: env.ADS_SYNC_URL && env.ADS_SYNC_SECRET ? new AdsSyncClient({ baseUrl: env.ADS_SYNC_URL, secret: env.ADS_SYNC_SECRET }) : null,
     push: pushFromEnv(env),
     mailer: mailerFromEnv(env),
+    apiPublicUrl: env.API_PUBLIC_URL || undefined,
+    receiptSecret: env.PUSH_RECEIPT_SECRET || env.VAPID_PRIVATE_KEY || undefined,
     appUrl: env.APP_URL || (env.API_CORS_ORIGINS ?? "http://localhost:3000").split(",")[0]!.trim(),
     corsOrigins: (env.API_CORS_ORIGINS ?? "http://localhost:3000").split(",").map((s) => s.trim()),
     async verifyJwt(token) {

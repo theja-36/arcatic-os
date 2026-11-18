@@ -10,7 +10,7 @@ export { serviceManagers };
  */
 export function serviceNotify(deps: ApiDeps) {
   const db = deps.serviceDb();
-  const n = createNotifier({ db, push: deps.push ?? null, mailer: deps.mailer ?? null, appUrl: deps.appUrl });
+  const n = createNotifier({ db, push: deps.push ?? null, mailer: deps.mailer ?? null, appUrl: deps.appUrl, receiptSecret: deps.receiptSecret, receiptUrl: deps.apiPublicUrl ? `${deps.apiPublicUrl}/push/receipt` : undefined });
   return {
     async customers(req: { workspace_id?: string; created_by: string | null }, event: CustomerEvent, facts: CustomerFacts, dedupeKey?: string) {
       const users = await requestCustomers(db, req);

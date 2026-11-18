@@ -18,6 +18,11 @@ describe("service notices", () => {
       expect(n.kind).toBe(`customer.${e}`);
     }
   });
+  it("tapping a push goes to the mobile hub for customers and to the desk for staff", () => {
+    for (const e of CUSTOMER) expect(customerNotice(e, base).pushLink, e).toBe("/m/w1?tab=inbox&service=r1&brand=b1");
+    for (const e of STAFF) expect(staffNotice(e, { requestId: "r1", title: "t", offeringName: "o" }).pushLink, e).toBe("/desk/r1");
+    expect(customerNotice("delivered", base).link).toBe("/w/w1/b/b1/services/r1");   // the in-app link is unchanged
+  });
   it("says what customers need: holds, charges, releases", () => {
     expect(customerNotice("received", base).body).toMatch(/120 credits on hold; you're charged only when you approve/);
     expect(customerNotice("approved", base).body).toMatch(/140 credits charged/);

@@ -52,7 +52,7 @@ async function main() {
     ...createRepurposeActivities({ db, llm }),
     ...createSeoActivities({ db, llm, firecrawl, embedder, ads, encryptionKey: process.env.ENCRYPTION_KEY }),
     ...createAdsActivities({ db, llm, ads, embedder, encryptionKey: process.env.ENCRYPTION_KEY }),
-    ...createServiceActivities({ db, appUrl: process.env.APP_URL, notifier: createNotifier({ db, push: pushFromEnv(), mailer: mailerFromEnv(), appUrl: process.env.APP_URL }) }),
+    ...createServiceActivities({ db, appUrl: process.env.APP_URL, notifier: createNotifier({ db, push: pushFromEnv(), mailer: mailerFromEnv(), appUrl: process.env.APP_URL, receiptSecret: process.env.PUSH_RECEIPT_SECRET || process.env.VAPID_PRIVATE_KEY, receiptUrl: process.env.API_PUBLIC_URL ? `${process.env.API_PUBLIC_URL}/push/receipt` : undefined }) }),
     ...createBillingActivities({ db, lago: process.env.LAGO_API_URL && process.env.LAGO_API_KEY ? new LagoClient({ baseUrl: process.env.LAGO_API_URL, apiKey: process.env.LAGO_API_KEY }) : null }),
     ...createImageActivities({ db, comfy: new ComfyUiClient({ baseUrl: process.env.COMFYUI_URL ?? "http://localhost:8188", sharedSecret: process.env.COMFYUI_SHARED_SECRET || undefined }) }),
     ...createKnowledgeActivities({

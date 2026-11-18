@@ -48,6 +48,9 @@ export interface ApiDeps {
   /** Web Push sender (VAPID) and transactional mailer; null → in-app notifications only */
   push?: import("@arcatic/integrations").WebPushSender | null;
   mailer?: import("@arcatic/integrations").Mailer | null;
+  /** public URL of this API (for push receipts) and the secret that signs them */
+  apiPublicUrl?: string;
+  receiptSecret?: string;
 }
 
 export type AppEnv = {

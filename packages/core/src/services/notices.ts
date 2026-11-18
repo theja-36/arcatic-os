@@ -20,7 +20,8 @@ export interface StaffFacts { requestId: string; title: string; offeringName: st
 export type CustomerEvent = "received" | "assigned" | "delivered" | "approved" | "cancelled" | "message" | "awaiting_approval";
 export type StaffEvent = "new_request" | "assigned" | "qa_ready" | "qa_returned" | "revision_requested" | "approved" | "cancelled" | "customer_message" | "overdue" | "hold_lost";
 
-export interface NoticeContent { kind: string; title: string; body: string; link: string; email: { subject: string; text: string } | null }
+/** `link` is the in-app page; `pushLink` is where tapping a push notification goes (customers: the mobile hub, staff: the service desk). */
+export interface NoticeContent { kind: string; title: string; body: string; link: string; pushLink: string; email: { subject: string; text: string } | null }
 
 const when = (iso?: string | null) => (iso ? new Date(iso).toUTCString().replace(/:\d\d GMT$/, " UTC") : "");
 const clip = (s: string | null | undefined, n = 280) => (s ? (s.length > n ? `${s.slice(0, n - 1)}…` : s) : "");
@@ -34,6 +35,8 @@ export const EMAIL_EVENTS: ReadonlySet<string> = new Set([
 
 export function customerNotice(event: CustomerEvent, f: CustomerFacts, appUrl = ""): NoticeContent {
   const link = `/w/${f.workspaceId}/b/${f.brandId}/services/${f.requestId}`;
+  // the mobile hub's Inbox, with the request highlighted (and a way into the full request page)
+  const pushLink = `/m/${f.workspaceId}?tab=inbox&service=${f.requestId}&brand=${f.brandId}`;
   let title: string, body: string;
   switch (event) {
     case "received":
@@ -48,7 +51,7 @@ export function customerNotice(event: CustomerEvent, f: CustomerFacts, appUrl = 
     case "awaiting_approval": title = `Waiting for your review: ${f.title}`; body = `Delivered ${plural(f.daysWaiting ?? 0, "day")} ago. Approve it or ask for a revision.`; break;
   }
   const kind = `customer.${event}`;
-  return { kind, title, body, link, email: EMAIL_EVENTS.has(kind) ? { subject: title, text: `${body}\n\nOpen it: ${appUrl}${link}\n\n— Arcatic` } : null };
+  return { kind, title, body, link, pushLink, email: EMAIL_EVENTS.has(kind) ? { subject: title, text: `${body}\n\nOpen it: ${appUrl}${link}\n\n— Arcatic` } : null };
 }
 
 export function staffNotice(event: StaffEvent, f: StaffFacts, appUrl = ""): NoticeContent {
@@ -68,5 +71,5 @@ export function staffNotice(event: StaffEvent, f: StaffFacts, appUrl = ""): Noti
     case "hold_lost": title = `Credit hold lost: ${f.title}`; body = "The customer's credit hold could not be kept; approval will try to hold the credits again."; break;
   }
   const kind = `staff.${event}`;
-  return { kind, title, body, link, email: EMAIL_EVENTS.has(kind) ? { subject: title, text: `${body}\n\nOpen it: ${appUrl}${link}\n\n— Arcatic service desk` } : null };
+  return { kind, title, body, link, pushLink: link, email: EMAIL_EVENTS.has(kind) ? { subject: title, text: `${body}\n\nOpen it: ${appUrl}${link}\n\n— Arcatic service desk` } : null };
 }

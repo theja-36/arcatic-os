@@ -7,8 +7,8 @@ import { memDb } from "./mem-db.js";
 
 const facts = { requestId: "r1", workspaceId: "w1", brandId: "b1", title: "Tiffin guide", offeringName: "Expert article", customerNote: "Here you go" };
 const fakePush = (status: Record<string, number>) => {
-  const sent: string[] = [];
-  return { sent, push: { publicKey: "k", send: async (s: { endpoint: string }) => { sent.push(s.endpoint); const st = status[s.endpoint] ?? 201; return st < 300 ? { ok: true, status: st } : { ok: false, status: st, expired: st === 410 || st === 404, message: "gone" }; } } as unknown as WebPushSender };
+  const sent: string[] = [], payloads: Array<{ link?: string; title: string; tag?: string; id?: string; receipt?: string; receiptUrl?: string }> = [];
+  return { sent, payloads, push: { publicKey: "k", send: async (s: { endpoint: string }, p: { link?: string; title: string; tag?: string; id?: string; receipt?: string; receiptUrl?: string }) => { sent.push(s.endpoint); payloads.push(p); const st = status[s.endpoint] ?? 201; return st < 300 ? { ok: true, status: st } : { ok: false, status: st, expired: st === 410 || st === 404, message: "gone" }; } } as unknown as WebPushSender };
 };
 const fakeMail = (mode: "allowlist" | "throw" = "allowlist") => {
   const sent: string[] = [];
@@ -24,9 +24,21 @@ describe("notifier", () => {
     expect(r!.push).toEqual([{ status: 201, ok: true }, { status: 410, ok: false, expired: true }]);
     expect(r!.email).toEqual({ sent: true });
     expect(e.sent).toEqual(["owner@example.test"]);
+    expect(p.payloads.map((x) => x.link)).toEqual(["/m/w1?tab=inbox&service=r1&brand=b1", "/m/w1?tab=inbox&service=r1&brand=b1"]);   // push taps open the mobile hub
     expect((m.tables.user_devices as Array<{ id: string }>).map((d) => d.id)).toEqual(["d1"]);   // expired subscription removed
     const row = (m.tables.notifications as Array<Record<string, unknown>>)[0]!;
     expect(row).toMatchObject({ audience: "customer", kind: "customer.delivered", body: "Here you go", delivery: { email: { sent: true } } });
+  });
+  it("gives each push its own tag and a signed receipt (a shared tag silently replaced later notifications)", async () => {
+    const m = memDb({ notifications: [], users: [{ id: "u1", email: "o@example.test" }], user_devices: [{ id: "d1", user_id: "u1", kind: "webpush", endpoint: "https://push/a", keys: { p256dh: "p", auth: "a" } }] });
+    const p = fakePush({});
+    const n = createNotifier({ db: m.db, push: p.push, receiptSecret: "s", receiptUrl: "https://api.example.test/push/receipt" });
+    await n.send([{ to: { userId: "u1", audience: "customer" }, notice: customerNotice("delivered", facts), dedupeKey: "a" }, { to: { userId: "u1", audience: "customer" }, notice: customerNotice("delivered", facts), dedupeKey: "b" }]);
+    const [x, y] = p.payloads;
+    expect(x!.tag).not.toBe(y!.tag);
+    expect(x!.tag).toBe(`n-${x!.id}`);
+    expect(x!.receipt).toMatch(new RegExp(`^${x!.id}\\.`));
+    expect(x!.receiptUrl).toBe("https://api.example.test/push/receipt");
   });
   it("never emails addresses outside the staging allowlist; email failure doesn't fail the action", async () => {
     const m = memDb({ notifications: [], users: [{ id: "u2", email: "real.person@gmail.com" }], user_devices: [] });

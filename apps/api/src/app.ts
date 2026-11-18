@@ -9,6 +9,7 @@ import { workspaceRoutes } from "./routes/workspace.js";
 import { adminRoutes, webhookRoutes } from "./routes/billing.js";
 import { deskRoutes } from "./routes/desk.js";
 import { meRoutes } from "./routes/mobile.js";
+import { pushRoutes } from "./routes/push.js";
 import type { ApiDeps, AppEnv } from "./types.js";
 
 export function buildApp(deps: ApiDeps) {
@@ -50,6 +51,7 @@ export function buildApp(deps: ApiDeps) {
   // unauthenticated by user tokens: signed webhooks and staff tooling
   app.route("/webhooks", webhookRoutes(deps));
   app.route("/admin", adminRoutes(deps));
+  app.route("/push", pushRoutes(deps));
 
   const v1 = new Hono<AppEnv>();
   v1.use(authenticate(deps));
