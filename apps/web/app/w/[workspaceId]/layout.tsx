@@ -63,7 +63,7 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
           {desk.data && <Link href="/desk" className="rounded-md px-3 py-2 text-[var(--text-muted)] hover:bg-[var(--surface-2)]">Service desk</Link>}
         </div>
       </aside>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:px-8">
+      <main className="mx-auto w-full min-w-0 max-w-5xl flex-1 px-4 py-6 md:px-8">
         {ws && ["owner", "admin", "editor"].includes(ws.role) && !path.startsWith(`${base}/settings/billing`) && <BillingBanner workspaceId={workspaceId} />}
         {children}
       </main>
