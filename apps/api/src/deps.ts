@@ -1,0 +1,66 @@
+import { createHash } from "node:crypto";
+import { isRole } from "@arcatic/core";
+import { createUserClient, dbConfigFromEnv, getServiceClient } from "@arcatic/database";
+import { AdsSyncClient, LagoClient, embedderFromEnv, mailerFromEnv, pushFromEnv } from "@arcatic/integrations";
+import { JobStarter, connectTemporal, temporalConfigFromEnv } from "@arcatic/jobs";
+import { createRemoteJWKSet, jwtVerify, type JWTVerifyGetKey } from "jose";
+import type { ApiDeps } from "./types.js";
+
+export function realDeps(env: NodeJS.ProcessEnv = process.env): ApiDeps {
+  const db = dbConfigFromEnv(env);
+  const service = () => getServiceClient(db);
+
+  // Supabase projects sign with asymmetric keys (JWKS); legacy projects use the HS256 secret.
+  const secret = env.SUPABASE_JWT_SECRET ? new TextEncoder().encode(env.SUPABASE_JWT_SECRET) : undefined;
+  const jwks: JWTVerifyGetKey | undefined = secret ? undefined : createRemoteJWKSet(new URL(`${db.url}/auth/v1/.well-known/jwks.json`));
+
+  let starter: Promise<JobStarter> | undefined;
+
+  return {
+    embedder: embedderFromEnv(env),
+    encryptionKey: env.ENCRYPTION_KEY,
+    postizUrl: env.POSTIZ_URL || undefined,
+    lago: env.LAGO_API_URL && env.LAGO_API_KEY ? new LagoClient({ baseUrl: env.LAGO_API_URL, apiKey: env.LAGO_API_KEY }) : null,
+    lagoWebhookKey: env.LAGO_WEBHOOK_SECRET || undefined,
+    lagoPaymentProvider: env.LAGO_PAYMENT_PROVIDER || undefined,
+    lagoPaymentProviderCode: env.LAGO_PAYMENT_PROVIDER_CODE || undefined,
+    adminToken: env.ADMIN_API_TOKEN || undefined,
+    ads: env.ADS_SYNC_URL && env.ADS_SYNC_SECRET ? new AdsSyncClient({ baseUrl: env.ADS_SYNC_URL, secret: env.ADS_SYNC_SECRET }) : null,
+    push: pushFromEnv(env),
+    mailer: mailerFromEnv(env),
+    appUrl: env.APP_URL || (env.API_CORS_ORIGINS ?? "http://localhost:3000").split(",")[0]!.trim(),
+    corsOrigins: (env.API_CORS_ORIGINS ?? "http://localhost:3000").split(",").map((s) => s.trim()),
+    async verifyJwt(token) {
+      try {
+        const { payload } = secret
+          ? await jwtVerify(token, secret, { audience: "authenticated" })
+          : await jwtVerify(token, jwks!, { audience: "authenticated" });
+        return typeof payload.sub === "string" ? { sub: payload.sub } : null;
+      } catch {
+        return null;
+      }
+    },
+    async resolveApiKey(raw) {
+      const hash = createHash("sha256").update(raw).digest("hex");
+      const { data } = await service().from("api_keys").select("id, workspace_id, role, scopes, expires_at, revoked_at").eq("secret_hash", hash).maybeSingle();
+      if (!data || data.revoked_at || (data.expires_at && new Date(data.expires_at) < new Date()) || !isRole(data.role)) return null;
+      void service().from("api_keys").update({ last_used_at: new Date().toISOString() }).eq("id", data.id).then(() => undefined);
+      return { kind: "api_key", keyId: data.id, workspaceId: data.workspace_id, role: data.role, scopes: data.scopes ?? [] };
+    },
+    async resolveMembership(workspaceId, userId) {
+      const { data } = await service().from("workspace_members").select("role, brand_restricted, status")
+        .eq("workspace_id", workspaceId).eq("user_id", userId).maybeSingle();
+      if (!data || data.status !== "active" || !isRole(data.role)) return null;
+      return { role: data.role, brandRestricted: data.brand_restricted };
+    },
+    userDb: (token) => createUserClient(db, token),
+    serviceDb: service,
+    jobs() {
+      starter ??= connectTemporal(temporalConfigFromEnv(env)).then((c) => new JobStarter(c)).catch((e) => {
+        starter = undefined;
+        throw e;
+      });
+      return starter;
+    },
+  };
+}
