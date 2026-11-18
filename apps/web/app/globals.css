@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "@arcatic/ui/tokens.css";
+@source "../../../packages/ui/src";
+
+html, body { background: var(--bg); color: var(--text); font-family: var(--font-sans); }
