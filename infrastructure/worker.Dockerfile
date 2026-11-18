@@ -3,7 +3,9 @@
 # (SaaS use, not distributed). Swap for an LGPL static build if images are ever shipped to customers (docs/00).
 FROM node:22-bookworm-slim
 RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg fonts-dejavu-core fonts-noto-core ca-certificates && rm -rf /var/lib/apt/lists/*
-RUN corepack enable
+# bake pnpm into the image (readable by the non-root runtime user) so a container start never downloads it
+ENV COREPACK_HOME=/usr/local/share/corepack
+RUN corepack enable && corepack prepare pnpm@10.6.1 --activate && chmod -R a+rX /usr/local/share/corepack
 WORKDIR /app
 COPY . .
 RUN pnpm install --frozen-lockfile --filter @arcatic/worker...
