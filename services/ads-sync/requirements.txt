@@ -1,0 +1,3 @@
+# Official SDKs, versions as in the project folder (google-ads-python-main 35.1.0 → API v26; facebook-business 26.0.4 → Graph v26.0)
+google-ads==35.1.0
+facebook-business==26.0.4
