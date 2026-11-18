@@ -1,0 +1,48 @@
+{
+  "name": "@arcatic/jobs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./workflows": "./src/workflows/index.ts",
+    "./activities": "./src/activities.ts",
+    "./brand-activities": "./src/brand-activities.ts",
+    "./knowledge-activities": "./src/knowledge-activities.ts",
+    "./strategy-activities": "./src/strategy-activities.ts",
+    "./image-activity": "./src/image-activity.ts",
+    "./media-activities": "./src/media-activities.ts",
+    "./publish-activities": "./src/publish-activities.ts",
+    "./publishing": "./src/publishing.ts",
+    "./analytics-activities": "./src/analytics-activities.ts",
+    "./repurpose-activities": "./src/repurpose-activities.ts",
+    "./billing": "./src/billing.ts",
+    "./seo-activities": "./src/seo-activities.ts",
+    "./seo-report": "./src/seo-report.ts",
+    "./ads-activities": "./src/ads-activities.ts",
+    "./service-activities": "./src/service-activities.ts",
+    "./notifier": "./src/notifier.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@arcatic/ai": "workspace:*",
+    "@arcatic/core": "workspace:*",
+    "@arcatic/database": "workspace:*",
+    "@temporalio/activity": "1.26.0",
+    "@temporalio/client": "1.26.0",
+    "@temporalio/common": "1.26.0",
+    "@temporalio/workflow": "1.26.0",
+    "@arcatic/integrations": "workspace:*",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@temporalio/testing": "1.26.0",
+    "@temporalio/worker": "1.26.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "@types/node": "^22.10.2"
+  }
+}
