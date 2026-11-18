@@ -45,6 +45,8 @@ Migration: `supabase/migrations/20261129000018_services_hardening.sql`.
 
 **98 / 98 checks passed** on a freshly reset database (`docs/evidence/phase12/local-staging-20261118105925/`). An earlier run on a non-reset database also passed 98 / 98 (`…/local-staging-20261118064126/`, which holds the customer and mobile screenshots).
 
+Update 2026-11-18: the harness gained Flow D (3-day "waiting for your review" reminders: none at 1 day, one at 4 days, idempotent re-runs, second at 7 days, deep link, no internal text) and now has **103 checks**; it passed **103 / 103** on the same (non-reset) local stack — `docs/evidence/phase12/local-staging-20261118131932/`. Hosted-staging preparation (preflight, SMTP check, checklists, Android checklist) is in [23-hosted-staging.md](23-hosted-staging.md); the feature-by-feature status is in [22-capability-matrix.md](22-capability-matrix.md).
+
 | Group | Checks | What is proven |
 |---|---|---|
 | Setup (15) | real Auth users (`@example.test`), workspace, brand, approved Brand Kit, 1000 test credits via admin API, reference image through Storage, service staff via admin API, push devices | the production API on real Supabase |
@@ -102,7 +104,7 @@ Secrets (JWTs, signed URLs, keys) are redacted from the evidence files. Test add
    ```
    E2E_TARGET=staging npx tsx --env-file=.env.staging scripts/e2e/services-staging.ts
    ```
-   Leave out `PUSH_MOCK_*`; real devices cover push. It must pass 98 / 98 minus the four P checks.
+   Leave out `PUSH_MOCK_*`; real devices cover push. It must pass 103 / 103 minus the four P checks.
 2. **Push on Android.** Android Chrome install + push (§3 criteria 4 and 7) needs a person with the device. Chrome desktop real push is verified; its notification click-through is not yet checked.
 3. **Temporal on staging.** The `billing-maintenance` schedule runs `serviceMaintenance` before the hold-expiry step. Locally that was checked with Temporal's test server and by calling the activity directly; it needs one scheduled run on staging (check `service.hold_extended` audit rows).
 4. **Email provider.** Configure SMTP for the staging provider's sandbox and keep `EMAIL_MODE=allowlist` there. Production moves to `all` only on purpose.
