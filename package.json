@@ -16,7 +16,9 @@
     "db:types": "supabase gen types typescript --local > packages/database/src/types.gen.ts",
     "infra:core": "docker compose -f infrastructure/docker-compose.yml --profile core up -d",
     "verify:render": "docker build -q -t arcatic-ffmpeg:test -f infrastructure/ffmpeg.Dockerfile infrastructure >/dev/null && tsx scripts/verify-render.ts",
-    "lago:setup": "tsx scripts/lago-setup.ts"
+    "lago:setup": "tsx scripts/lago-setup.ts",
+    "staging:preflight": "tsx scripts/staging/preflight.ts",
+    "staging:smtp": "tsx scripts/staging/smtp-check.ts"
   },
   "devDependencies": {
     "turbo": "^2.3.3",
